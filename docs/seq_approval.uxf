@@ -1,0 +1,43 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>Relation</id><coordinates><x>740</x><y>440</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>680</x><y>390</y><w>140</w><h>60</h></coordinates><panel_attributes>valign=center
+_*w: Webshop-kezelő*_</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>740</x><y>500</y><w>20</w><h>540</h></coordinates><panel_attributes>
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1010</x><y>390</y><w>140</w><h>60</h></coordinates><panel_attributes>valign=center
+_*a: Animáció-kezelő*_</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1070</x><y>440</y><w>30</w><h>560</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;540</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1070</x><y>980</y><w>20</w><h>40</h></coordinates><panel_attributes>
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>880</y><w>20</w><h>50</h></coordinates><panel_attributes>
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>760</x><y>260</y><w>140</w><h>70</h></coordinates><panel_attributes>halign=center
+valign=center
+Minden tevékenység
+naplózva</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>320</y><w>80</w><h>90</h></coordinates><panel_attributes></panel_attributes><additional_attributes>60;10;10;70</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1080</x><y>260</y><w>140</w><h>70</h></coordinates><panel_attributes>halign=center
+valign=center
+Minden tevékenység
+naplózva</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1070</x><y>320</y><w>80</w><h>90</h></coordinates><panel_attributes></panel_attributes><additional_attributes>60;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>480</y><w>480</w><h>40</h></coordinates><panel_attributes>Feltöltés jóváhagyása(kezdeményező, feltöltés azonosítója, elfogadás/elutasítás)
+lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>460;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>500</y><w>430</w><h>60</h></coordinates><panel_attributes>Feltöltés jóváhagyása(feltöltés azonosítója, elfogadás/elutasítás)
+lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>20;40;70;40;70;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>600</y><w>200</w><h>70</h></coordinates><panel_attributes>lt=&lt;.
+Elfogadva/elutasítva</panel_attributes><additional_attributes>10;50;70;50;70;10;20;10</additional_attributes></element><element><id>UMLFrame</id><coordinates><x>450</x><y>660</y><w>790</w><h>400</h></coordinates><panel_attributes>alt                         
+--
+
+-.
+halign=left
+[elfogadva]
+
+
+
+
+
+
+
+
+-.
+halign=left
+[elutasítva]
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>810</y><w>300</w><h>40</h></coordinates><panel_attributes>Feltöltés elfogadva
+lt=&lt;.</panel_attributes><additional_attributes>10;20;280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>1020</y><w>300</w><h>40</h></coordinates><panel_attributes>Feltöltés elutasítva
+lt=&lt;.</panel_attributes><additional_attributes>10;20;280;20</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>960</y><w>340</w><h>40</h></coordinates><panel_attributes>Animáció törlése(feltöltés azonosítója)
+lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>320;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>1000</y><w>340</w><h>40</h></coordinates><panel_attributes>Siker
+lt=&lt;.</panel_attributes><additional_attributes>10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>740</x><y>1030</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>540</y><w>20</w><h>70</h></coordinates><panel_attributes>
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>740</y><w>20</w><h>50</h></coordinates><panel_attributes>
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>710</y><w>200</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Feltöltés elfogadása</panel_attributes><additional_attributes>20;30;70;30;70;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>780</y><w>190</w><h>50</h></coordinates><panel_attributes>lt=&lt;.
+Feltöltés elfogadva</panel_attributes><additional_attributes>10;30;70;30;70;10;20;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>850</y><w>200</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-
+Feltöltés elutasítása</panel_attributes><additional_attributes>20;30;70;30;70;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>920</y><w>190</w><h>50</h></coordinates><panel_attributes>lt=&lt;.
+Feltöltés elutasítva</panel_attributes><additional_attributes>10;30;70;30;70;10;20;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1070</x><y>1010</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element></diagram>
