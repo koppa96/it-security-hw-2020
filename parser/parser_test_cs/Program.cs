@@ -14,7 +14,7 @@ namespace parser_test_cs
 			string in_txt = "MyTestString";
 			byte[] in_buff = Encoding.ASCII.GetBytes(in_txt);
 			byte[] out_buff = new byte[in_buff.Length];
-			ParseAnimation(in_buff, in_buff.Length + 1, out_buff, in_buff.Length + 1);
+			ParseAnimation(in_buff, in_buff.Length + 1, out_buff, out_buff.Length + 1);
 			string out_txt = Encoding.ASCII.GetString(out_buff);
 			Console.WriteLine(out_txt);
 		}
