@@ -6,7 +6,7 @@ public:
 
 	}
 
-	int GetPreview(char* out_buffer) {
+	int GetPreview(char* out_buffer, int out_len) {
 		return 0;
 	}
 };

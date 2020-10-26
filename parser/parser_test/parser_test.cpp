@@ -40,9 +40,10 @@ void readAndparseAnim() {
     const int in_len = anim_str.length() + 1;
     const int out_len = in_len;
     char* out_buff = new char[out_len];
-    //std::cout.write(in_buff, 100 /*in_len - 1*/);
     //Passing input for parsing
-    ParseAnimation(in_buff, in_len, out_buff, out_len);
+    const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
+    std::string out_str(out_buff, real_out_len);
+    std::cout << out_str;
     //Releasing resources
     anim_in.close();
     delete[] out_buff;

@@ -3,9 +3,9 @@
 #include "Parse.h"
 #include "Parser.h"
 
-void ParseAnimation(const char* in_buffer, int in_len, char* out_buffer, int out_len)
+int ParseAnimation(const char* in_buffer, int in_len, char* out_buffer, int out_len)
 {
     Parser parser;
     Parse p = parser.GenerateParse(in_buffer, in_len);
-    p.GetPreview(out_buffer);
+    return p.GetPreview(out_buffer, out_len);
 }
