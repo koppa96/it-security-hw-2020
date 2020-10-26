@@ -1,8 +1,12 @@
 #pragma once
 
-class Parse {
+#include <memory>
+
+class ParseData {
+	const char* raw_data;
+	const int raw_data_len;
 public:
-	Parse() {
+	ParseData(const char* in_buffer, int in_len) : raw_data{ in_buffer }, raw_data_len{ in_len } {
 
 	}
 
@@ -10,3 +14,5 @@ public:
 		return 0;
 	}
 };
+
+using Parse = std::shared_ptr<ParseData>;
