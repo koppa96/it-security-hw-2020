@@ -2,12 +2,19 @@
 
 #include "Parse.h"
 
+constexpr auto LENGTH_BLOCK_SIZE = 8;
+constexpr auto FILE_TYPE_SIZE = 4;
+
 class Parser {
-	void ParseCIFF(Parse&);
-	void ParseCIFFHeader(Parse&);
-	int ParseHeaderBlock(Parse&, int current_idx);
-	int ParseCreditsBlock(Parse&, int current_idx);
-	int ParseAnimationBlock(Parse&, int current_idx);
+	
+	Parse parse;
+
+	void ParseCIFF();
+	void ParseCIFFHeader();
+	int ParseHeaderBlock(int current_idx);
+	int ParseCreditsBlock(int current_idx);
+	int ParseAnimationBlock(int current_idx);
+	int ReadLength(int current_idx);
 public:
 	Parser() {
 
