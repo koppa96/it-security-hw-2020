@@ -61,6 +61,10 @@ int Parser::ParseCreditsBlock(int current_idx) {
 	return current_idx;
 }
 
+int Parser::ParseAnimationBlock(int current_idx) {
+	return 0;
+}
+
 int Parser::ReadLength(int current_idx) {
 	if ((current_idx + LENGTH_BLOCK_SIZE) > parse->raw_data_len)
 		throw std::out_of_range("Data index larger than data size!");
@@ -70,4 +74,13 @@ int Parser::ReadLength(int current_idx) {
 		length += (int)parse->raw_data[current_idx + i] * (int)std::pow(10, i);
 	}
 	return length;
+}
+
+
+void Parser::ParseCIFFHeader() {
+
+}
+
+void Parser::ParseCIFF() {
+
 }
