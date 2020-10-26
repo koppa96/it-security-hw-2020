@@ -29,7 +29,7 @@ int Parser::ParseHeaderBlock(int current_idx) {
 	int block_len = ReadLength(current_idx); //TODO: Check if read size is correct
 	current_idx += LENGTH_BLOCK_SIZE;
 
-	std::string filetype(parse->raw_data, parse->raw_data + FILE_TYPE_SIZE);
+	std::string filetype(parse->raw_data + current_idx, parse->raw_data + current_idx + FILE_TYPE_SIZE);
 	if (filetype != "CAFF")
 		throw std::invalid_argument("Invalid file type!");
 	current_idx += FILE_TYPE_SIZE;
@@ -40,6 +40,23 @@ int Parser::ParseHeaderBlock(int current_idx) {
 	int num_anim = ReadLength(current_idx); //TODO: Check if read image count is correct
 	parse->SetImageCount(num_anim);
 	current_idx += LENGTH_BLOCK_SIZE;
+
+	return current_idx;
+}
+
+int Parser::ParseCreditsBlock(int current_idx) {
+	int block_len = ReadLength(current_idx); //TODO: Check if read size is correct
+	current_idx += LENGTH_BLOCK_SIZE;
+
+	//TODO: read and parse date
+	current_idx += DATE_BLOCK_SIZE;
+
+	int creator_len = ReadLength(current_idx); //TODO: Check if read length is correct
+	current_idx += LENGTH_BLOCK_SIZE;
+
+	std::string creator(parse->raw_data + current_idx, parse->raw_data + current_idx + creator_len);
+	parse->SetCreatorName(creator);
+	current_idx += creator_len;
 
 	return current_idx;
 }

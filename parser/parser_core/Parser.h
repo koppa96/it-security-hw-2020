@@ -4,6 +4,7 @@
 
 constexpr auto LENGTH_BLOCK_SIZE = 8;
 constexpr auto FILE_TYPE_SIZE = 4;
+constexpr auto DATE_BLOCK_SIZE = 6;
 
 class Parser {
 	

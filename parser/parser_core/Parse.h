@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 class ParseData {
 	int image_count = 0;
+	std::string creator_name;
 public:
 	const char* raw_data;
 	const int raw_data_len;
@@ -16,12 +18,22 @@ public:
 		return 0;
 	}
 
-	int GetImageCount() {
+	//Getters/setters:
+
+	const int GetImageCount() const {
 		return image_count;
 	}
 
 	void SetImageCount(int img_count) {
 		image_count = img_count;
+	}
+
+	const std::string& GetCreatorName() const {
+		return creator_name;
+	}
+
+	void SetCreatorName(std::string name) {
+		creator_name = name;
 	}
 };
 
