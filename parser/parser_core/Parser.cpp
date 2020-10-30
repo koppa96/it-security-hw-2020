@@ -62,7 +62,13 @@ int Parser::ParseCreditsBlock(int current_idx) {
 }
 
 int Parser::ParseAnimationBlock(int current_idx) {
-	return 0;
+	int duration = ReadLength(current_idx); //TODO: Check if read duration is correct
+	current_idx += LENGTH_BLOCK_SIZE;
+
+	auto img = ParseCIFF(current_idx);
+	parse->AddImage(img, duration);
+
+	return img->data_end_idx;
 }
 
 int Parser::ReadLength(int current_idx) {
@@ -76,11 +82,64 @@ int Parser::ReadLength(int current_idx) {
 	return length;
 }
 
+const ParseImage& Parser::ParseCIFF(int current_idx) {
+	int start_idx = current_idx;
 
-void Parser::ParseCIFFHeader() {
+	std::string filetype(parse->raw_data + current_idx, parse->raw_data + current_idx + FILE_TYPE_SIZE);
+	if (filetype != "CIFF")
+		throw std::invalid_argument("Invalid file type!");
+	current_idx += FILE_TYPE_SIZE;
 
-}
+	int header_size = ReadLength(current_idx); //TODO: Check if read size is correct
+	int header_end = start_idx + header_size;
+	current_idx += LENGTH_BLOCK_SIZE;
 
-void Parser::ParseCIFF() {
+	int content_size = ReadLength(current_idx); //TODO: Check if read size is correct
+	current_idx += LENGTH_BLOCK_SIZE;
 
+	int width = ReadLength(current_idx);
+	current_idx += LENGTH_BLOCK_SIZE;
+
+	int height = ReadLength(current_idx);
+	current_idx += LENGTH_BLOCK_SIZE;
+
+	if(content_size != (width * height * BYTES_PER_PIXEL))
+		throw std::out_of_range("Content size not matching image size!");
+
+	int i = 0;
+	while (parse->raw_data[current_idx + i] != '\n') {
+		if((current_idx + i) > header_end)
+			throw std::invalid_argument("Caption must end with a \\n!");
+		i++;
+	}
+	std::string caption(parse->raw_data + current_idx, parse->raw_data + current_idx + i);
+	current_idx += i;
+
+	ParseImage image = std::make_shared<ImageParseData>(caption, width, height);
+
+	i = 0;
+	while ((current_idx + i) <= header_end) {
+		int j = 0;
+		while (parse->raw_data[current_idx + i + j] != '\0') {
+			if ((current_idx + i + j) > (start_idx + header_size))
+				throw std::invalid_argument("Last image tag must end with a \\0!");
+			j++;
+		}
+		std::string tag(parse->raw_data + current_idx + i, parse->raw_data + current_idx + i + j);
+		image->AddTag(tag);
+		i += j + 1;
+	}
+	current_idx = header_end;
+
+	for (i = 0; i < content_size; i++) {
+		int base_idx = current_idx + i * BYTES_PER_PIXEL;
+
+		if ((base_idx + BYTES_PER_PIXEL - 1) > parse->raw_data_len)
+			throw std::out_of_range("Pixel count not matching image size!");
+
+		Pixel p(parse->raw_data[base_idx], parse->raw_data[base_idx + 1], parse->raw_data[base_idx + 2]);
+		image->AddPixel(p);
+	}
+
+	return image;
 }

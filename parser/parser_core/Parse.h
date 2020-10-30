@@ -1,11 +1,16 @@
 #pragma once
 
+#include "ParseImage.h"
 #include <memory>
 #include <string>
+#include <vector>
 
 class ParseData {
 	int image_count = 0;
 	std::string creator_name;
+	std::vector<ParseImage> images;
+	int max_image_duration = -1;
+	int preview_index = -1;
 public:
 	const char* raw_data;
 	const int raw_data_len;
@@ -14,8 +19,22 @@ public:
 
 	}
 
-	int GetPreview(char* out_buffer, int out_len) {
-		return 0;
+	const ParseImage& GetPreview() {
+		if (images.size() < 1)
+			throw std::underflow_error("Animation contains no images!");
+
+		if (preview_index < 0 || preview_index > images.size())
+			preview_index = 0;
+
+		return images[preview_index];
+	}
+
+	void AddImage(const ParseImage& image, int duration) {
+		images.push_back(image);
+		if (duration > max_image_duration) {
+			max_image_duration = duration;
+			preview_index = images.size() - 1;
+		}
 	}
 
 	//Getters/setters:

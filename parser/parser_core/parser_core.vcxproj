@@ -152,13 +152,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ParseImage.h" />
     <ClInclude Include="LibApi.h" />
     <ClInclude Include="Parse.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Pixel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ParseImage.cpp" />
     <ClCompile Include="LibApi.cpp" />
     <ClCompile Include="Parse.cpp" />
     <ClCompile Include="Parser.cpp" />
