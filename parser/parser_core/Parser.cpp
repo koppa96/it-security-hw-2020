@@ -8,6 +8,9 @@ Parse& Parser::GenerateParse(const char* in_buffer, int in_len) {
 	for (int i = 0; i < in_len; ) {
 		int block_type = (int)in_buffer[i++];
 
+		int block_len = ReadLength(i); //TODO: Check if read size is correct
+		i += LENGTH_BLOCK_SIZE;
+
 		switch (block_type) {
 		case 1:
 			i = ParseHeaderBlock(i);
@@ -26,9 +29,6 @@ Parse& Parser::GenerateParse(const char* in_buffer, int in_len) {
 }
 
 int Parser::ParseHeaderBlock(int current_idx) {
-	int block_len = ReadLength(current_idx); //TODO: Check if read size is correct
-	current_idx += LENGTH_BLOCK_SIZE;
-
 	std::string filetype(parse->raw_data + current_idx, parse->raw_data + current_idx + FILE_TYPE_SIZE);
 	if (filetype != "CAFF")
 		throw std::invalid_argument("Invalid file type!");
@@ -45,9 +45,6 @@ int Parser::ParseHeaderBlock(int current_idx) {
 }
 
 int Parser::ParseCreditsBlock(int current_idx) {
-	int block_len = ReadLength(current_idx); //TODO: Check if read size is correct
-	current_idx += LENGTH_BLOCK_SIZE;
-
 	//TODO: read and parse date
 	current_idx += DATE_BLOCK_SIZE;
 
@@ -62,7 +59,7 @@ int Parser::ParseCreditsBlock(int current_idx) {
 }
 
 int Parser::ParseAnimationBlock(int current_idx) {
-	int duration = ReadLength(current_idx); //TODO: Check if read duration is correct
+	int duration = ReadLength(current_idx); //TODO: Check if read duration is correct		//The read value is probably not correct atm, need to check later, it's ok for now
 	current_idx += LENGTH_BLOCK_SIZE;
 
 	auto img = ParseCIFF(current_idx);
