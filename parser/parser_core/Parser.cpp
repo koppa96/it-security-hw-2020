@@ -4,7 +4,7 @@
 #include <cmath>
 
 Parse& Parser::GenerateParse(const char* in_buffer, int in_len) {
-	Parse p = std::make_shared<ParseData>(in_buffer, in_len);
+	parse = std::make_shared<ParseData>(in_buffer, in_len);
 	for (int i = 0; i < in_len; ) {
 		int block_type = (int)in_buffer[i++];
 
@@ -22,7 +22,7 @@ Parse& Parser::GenerateParse(const char* in_buffer, int in_len) {
 			throw std::invalid_argument("Invalid block id!");
 		}
 	}
-	return p;
+	return parse;
 }
 
 int Parser::ParseHeaderBlock(int current_idx) {
