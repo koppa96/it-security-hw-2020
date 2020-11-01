@@ -8,7 +8,7 @@ class Parser {
 	
 	Parse parse;
 
-	const ParseImage& ParseCIFF(len_t current_idx);
+	ParseImage ParseCIFF(len_t current_idx);
 	len_t ParseHeaderBlock(len_t current_idx);
 	len_t ParseCreditsBlock(len_t current_idx);
 	len_t ParseAnimationBlock(len_t current_idx);

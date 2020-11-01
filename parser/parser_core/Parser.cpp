@@ -80,7 +80,7 @@ len_t Parser::ReadLength(len_t current_idx) {
 	return length;
 }
 
-const ParseImage& Parser::ParseCIFF(len_t current_idx) {
+ParseImage Parser::ParseCIFF(len_t current_idx) {
 	len_t start_idx = current_idx;
 
 	std::string filetype(parse->raw_data + current_idx, parse->raw_data + current_idx + FILE_TYPE_SIZE);
@@ -131,7 +131,7 @@ const ParseImage& Parser::ParseCIFF(len_t current_idx) {
 
 	len_t pixel_count = width * height;
 	for (i = 0; i < pixel_count; i++) {
-		len_t base_idx = current_idx + i * BYTES_PER_PIXEL;
+		len_t base_idx = current_idx + (len_t)i * BYTES_PER_PIXEL;
 
 		if ((base_idx + BYTES_PER_PIXEL - 1) > parse->raw_data_len)
 			throw std::out_of_range("Pixel count not matching image size!");
@@ -139,6 +139,9 @@ const ParseImage& Parser::ParseCIFF(len_t current_idx) {
 		Pixel p(parse->raw_data[base_idx], parse->raw_data[base_idx + 1], parse->raw_data[base_idx + 2]);
 		image->AddPixel(p);
 	}
+
+	image->data_start_idx = start_idx;
+	image->data_end_idx = current_idx;
 
 	return image;
 }

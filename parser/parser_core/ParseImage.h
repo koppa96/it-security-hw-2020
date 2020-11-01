@@ -15,8 +15,8 @@ class ImageParseData {
 	const std::string caption;
 	std::vector<Pixel> pixels;
 public:
-	len_t data_start_idx;
-	len_t data_end_idx;
+	len_t data_start_idx = -1;
+	len_t data_end_idx = -1;
 
 	ImageParseData(const std::string& caption, len_t width, len_t height) : caption{ caption }, width{ width }, height{ height }, image_size{ width * height } {
 		pixels.reserve(image_size);
