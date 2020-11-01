@@ -116,7 +116,7 @@ const ParseImage& Parser::ParseCIFF(len_t current_idx) {
 	ParseImage image = std::make_shared<ImageParseData>(caption, width, height);
 
 	i = 0;
-	while (((len_t)current_idx + i) <= header_end) {
+	while (((len_t)current_idx + i) < header_end) {
 		int j = 0;
 		while (parse->raw_data[current_idx + i + j] != '\0') {
 			if (((len_t)current_idx + i + j) > (start_idx + header_size))
