@@ -129,7 +129,8 @@ const ParseImage& Parser::ParseCIFF(len_t current_idx) {
 	}
 	current_idx = header_end;
 
-	for (i = 0; i < content_size; i++) {
+	len_t pixel_count = width * height;
+	for (i = 0; i < pixel_count; i++) {
 		len_t base_idx = current_idx + i * BYTES_PER_PIXEL;
 
 		if ((base_idx + BYTES_PER_PIXEL - 1) > parse->raw_data_len)
