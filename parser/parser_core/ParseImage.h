@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Defines.h"
 #include "Pixel.h"
 #include <memory>
 #include <string>
@@ -8,16 +9,16 @@
 
 class ImageParseData {
 	std::vector<std::string> tags;
-	const int width;
-	const int height;
-	const int image_size;
+	const len_t width;
+	const len_t height;
+	const len_t image_size;
 	const std::string caption;
 	std::vector<Pixel> pixels;
 public:
-	int data_start_idx;
-	int data_end_idx;
+	len_t data_start_idx;
+	len_t data_end_idx;
 
-	ImageParseData(const std::string& caption, int width, int height) : caption{ caption }, width{ width }, height{ height }, image_size{ width * height } {
+	ImageParseData(const std::string& caption, len_t width, len_t height) : caption{ caption }, width{ width }, height{ height }, image_size{ width * height } {
 		pixels.reserve(image_size);
 	}
 

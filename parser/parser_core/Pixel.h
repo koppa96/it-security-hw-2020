@@ -1,8 +1,10 @@
 #pragma once
 
-struct Pixel {
-	int r, g, b;
+#include "Defines.h"
 
-	Pixel(int r, int g, int b) : r{ r }, g{ g }, b{ b } {
+struct Pixel {
+	unsigned int r, g, b;
+
+	Pixel(unsigned int r, unsigned int g, unsigned int b) : r{ r }, g{ g }, b{ b } {
 	}
 };

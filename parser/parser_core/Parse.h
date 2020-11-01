@@ -6,16 +6,16 @@
 #include <vector>
 
 class ParseData {
-	int image_count = 0;
+	len_t image_count = 0;
 	std::string creator_name;
 	std::vector<ParseImage> images;
-	int max_image_duration = -1;
-	int preview_index = -1;
+	len_t max_image_duration = -1;
+	len_t preview_index = -1;
 public:
-	const char* raw_data;
-	const int raw_data_len;
+	const unsigned char* raw_data;
+	const len_t raw_data_len;
 
-	ParseData(const char* in_buffer, int in_len) : raw_data{ in_buffer }, raw_data_len{ in_len } {
+	ParseData(const unsigned char* in_buffer, len_t in_len) : raw_data{ in_buffer }, raw_data_len{ in_len } {
 
 	}
 
@@ -29,7 +29,7 @@ public:
 		return images[preview_index];
 	}
 
-	void AddImage(const ParseImage& image, int duration) {
+	void AddImage(const ParseImage& image, len_t duration) {
 		images.push_back(image);
 		if (duration > max_image_duration) {
 			max_image_duration = duration;
@@ -39,11 +39,11 @@ public:
 
 	//Getters/setters:
 
-	const int GetImageCount() const {
+	const len_t GetImageCount() const {
 		return image_count;
 	}
 
-	void SetImageCount(int img_count) {
+	void SetImageCount(len_t img_count) {
 		image_count = img_count;
 	}
 
