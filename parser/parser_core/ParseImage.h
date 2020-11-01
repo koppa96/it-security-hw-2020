@@ -32,6 +32,18 @@ public:
 
 		pixels.push_back(pixel);
 	}
+
+	std::vector<Pixel> GetPixels() {
+		return pixels;
+	}
+
+	const len_t GetWidth() const {
+		return width;
+	}
+
+	const len_t GetHeight() const {
+		return height;
+	}
 };
 
 using ParseImage = std::shared_ptr<ImageParseData>;
