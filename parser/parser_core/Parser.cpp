@@ -6,7 +6,7 @@
 Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 	const unsigned char* raw_data_converted = reinterpret_cast<const unsigned char*>(in_buffer);	//Making sure input data is treated as unsigned
 	parse = std::make_shared<ParseData>(raw_data_converted, in_len);
-	for (len_t i = 0; i < in_len; ) {
+	for (len_t i = 0; i < (in_len - 1); ) {
 		char block_type = in_buffer[i++];
 
 		len_t block_len = ReadLength(i); //TODO: Check if read size is correct
@@ -139,6 +139,8 @@ ParseImage Parser::ParseCIFF(len_t current_idx) {
 		Pixel p(parse->raw_data[base_idx], parse->raw_data[base_idx + 1], parse->raw_data[base_idx + 2]);
 		image->AddPixel(p);
 	}
+
+	current_idx += content_size;
 
 	image->data_start_idx = start_idx;
 	image->data_end_idx = current_idx;
