@@ -7,7 +7,7 @@ Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 	const unsigned char* raw_data_converted = reinterpret_cast<const unsigned char*>(in_buffer);	//Making sure input data is treated as unsigned
 	parse = std::make_shared<ParseData>(raw_data_converted, in_len);
 	for (len_t i = 0; i < (in_len - 1); ) {
-		char block_type = in_buffer[i++];
+		char block_type = parse->raw_data[i++];
 
 		len_t block_len = ReadLength(i); //TODO: Check if read size is correct
 		i += LENGTH_BLOCK_SIZE;
