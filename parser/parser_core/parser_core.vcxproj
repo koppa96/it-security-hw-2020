@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;PARSERCORE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;PARSERCORE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -153,17 +153,18 @@
   <ItemGroup>
     <ClInclude Include="Defines.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="ImageSaver.h" />
+    <ClInclude Include="ImageBuilder.h" />
     <ClInclude Include="ParseImage.h" />
     <ClInclude Include="LibApi.h" />
     <ClInclude Include="Parse.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pixel.h" />
+    <ClInclude Include="Preview.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ImageSaver.cpp" />
+    <ClCompile Include="ImageBuilder.cpp" />
     <ClCompile Include="ParseImage.cpp" />
     <ClCompile Include="LibApi.cpp" />
     <ClCompile Include="Parse.cpp" />

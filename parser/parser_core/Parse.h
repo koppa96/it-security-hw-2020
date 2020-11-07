@@ -19,7 +19,7 @@ public:
 
 	}
 
-	const ParseImage& GetPreview() {
+	const ParseImage& GetPreviewImage() {
 		if (images.size() < 1)
 			throw std::underflow_error("Animation contains no images!");
 

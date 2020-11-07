@@ -1,24 +1,21 @@
 #include "pch.h"
-#include "ImageSaver.h"
+#include "ImageBuilder.h"
 #include <vector>
 #include <fstream>
 
-#include <iostream>
-
-std::string ImageSaver::SavePreview(ParseImage pi) {
+Preview ImageBuilder::BuildPreview(ParseImage pi) {
 	auto pixels = pi->GetPixels();
 	len_t size = BMP_HEADER_SIZE + (len_t)pixels.size() * BYTES_PER_PIXEL;
 	imagedata = new unsigned char[size];
 	GenerateBitmapHeader(size);
 	GenerateInformationsHeader(pi);
 	WriteBitmap(pixels, size);
-	std::string filename(FILE_OUTPUT_DIR);
-	filename += "asd.bmp";
-	SaveFile(filename, size);
-	return filename;
+	auto image_out = reinterpret_cast<char*>(imagedata);
+	Preview data = std::make_shared<PreviewData>(image_out, size);
+	return data;
 }
 
-void ImageSaver::GenerateBitmapHeader(len_t image_size) {
+void ImageBuilder::GenerateBitmapHeader(len_t image_size) {
 	//Signature
 	imagedata[0] = 'B';
 	imagedata[1] = 'M';
@@ -33,7 +30,7 @@ void ImageSaver::GenerateBitmapHeader(len_t image_size) {
 	WriteInt(10, (unsigned int)54);
 }
 
-void ImageSaver::WriteInt(len_t starting_idx, unsigned int number) {
+void ImageBuilder::WriteInt(len_t starting_idx, unsigned int number) {
 	for (int i = 0; i < 4; i++) {
 		imagedata[starting_idx + i] = (char)(number >> i * 8) & 0x000000ff;
 	}
@@ -41,13 +38,13 @@ void ImageSaver::WriteInt(len_t starting_idx, unsigned int number) {
 
 /// <param name="from">Starting index (inclusive)</param>
 /// <param name="to">Ending index (exclusive)</param>
-void ImageSaver::FillWithZeros(len_t from, len_t to) {
+void ImageBuilder::FillWithZeros(len_t from, len_t to) {
 	for (int i = from; i < to; i++) {
 		imagedata[i] = 0;
 	}
 }
 
-void ImageSaver::GenerateInformationsHeader(ParseImage pi) {
+void ImageBuilder::GenerateInformationsHeader(ParseImage pi) {
 	//Header size (40)
 	WriteInt(14, (unsigned int)40);
 
@@ -81,7 +78,7 @@ void ImageSaver::GenerateInformationsHeader(ParseImage pi) {
 	FillWithZeros(46, 54);
 }
 
-void ImageSaver::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_size) {
+void ImageBuilder::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_size) {
 	len_t base_idx;
 	auto n = pixels.size();
 	for (int i = 0; i < n; i++) {
@@ -94,12 +91,4 @@ void ImageSaver::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_size)
 		imagedata[base_idx + 1] = pixels[i].g;
 		imagedata[base_idx + 2] = pixels[i].r;
 	}
-	std::cout << image_size;
-}
-
-void ImageSaver::SaveFile(std::string filename, len_t image_size) {
-	std::ofstream image_out(filename);
-	const char* out_data = reinterpret_cast<const char*>(imagedata);
-	image_out.write(out_data, image_size);
-	image_out.close();
 }

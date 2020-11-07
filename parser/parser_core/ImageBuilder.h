@@ -2,8 +2,9 @@
 
 #include "Defines.h"
 #include "ParseImage.h"
+#include "Preview.h"
 
-class ImageSaver {
+class ImageBuilder {
 	unsigned char* imagedata;
 
 	void GenerateBitmapHeader(len_t image_size);
@@ -14,13 +15,8 @@ class ImageSaver {
 	}
 	void FillWithZeros(len_t from, len_t to);
 	void WriteBitmap(const std::vector<Pixel>& pixels, len_t image_size);
-	void SaveFile(std::string filename, len_t image_size);
 public:
-	std::string SavePreview(ParseImage image);
+	Preview BuildPreview(ParseImage image);
 
-	ImageSaver() = default;
-
-	~ImageSaver() {
-		delete[] imagedata;
-	}
+	ImageBuilder() = default;
 };

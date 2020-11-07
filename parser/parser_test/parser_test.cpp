@@ -38,14 +38,15 @@ void readAndparseAnim() {
     const char* in_buff = anim_str.c_str();
     //Setting output buffers and lengths
     const int in_len = anim_str.length() + 1;
-    const int out_len = in_len; // MIÉRT?????????????????????????????????????????????????
-    char* out_buff = new char[out_len]; // Ebbe most mi kerül? A path vagy a preview?
+    const int out_len = in_len;
+    char* out_buff = new char[out_len];
     //Passing input for parsing
     const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
-    std::string out_str(out_buff, real_out_len);
-    std::cout << out_str;
-    //Releasing resources
+    //Writing image, releasing resources
+    std::ofstream image_out("..\\..\\output\\asd.bmp");
+    image_out.write(out_buff, real_out_len);
     anim_in.close();
+    image_out.close();
     delete[] out_buff;
 }
 
