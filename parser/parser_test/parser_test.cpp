@@ -38,8 +38,8 @@ void readAndparseAnim() {
     const char* in_buff = anim_str.c_str();
     //Setting output buffers and lengths
     const int in_len = anim_str.length() + 1;
-    const int out_len = in_len;
-    char* out_buff = new char[out_len];
+    const int out_len = in_len; // MIÉRT?????????????????????????????????????????????????
+    char* out_buff = new char[out_len]; // Ebbe most mi kerül? A path vagy a preview?
     //Passing input for parsing
     const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
     std::string out_str(out_buff, real_out_len);

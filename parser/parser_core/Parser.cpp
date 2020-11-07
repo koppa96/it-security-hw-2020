@@ -6,16 +6,30 @@
 Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 	const unsigned char* raw_data_converted = reinterpret_cast<const unsigned char*>(in_buffer);	//Making sure input data is treated as unsigned
 	parse = std::make_shared<ParseData>(raw_data_converted, in_len);
-	for (len_t i = 0; i < (in_len - 1); ) {
+
+	len_t i = 0;
+	char block_type = parse->raw_data[i++];
+	if (block_type != CAFF_HEADER_BLOCK_TYPE) {
+		throw std::invalid_argument("The file must start with a CAFF header.");
+	}
+
+	len_t block_len = ReadLength(i);
+	i += LENGTH_BLOCK_SIZE;
+	if (i + block_len > in_len) {  // TODO: Check if the check is correct :)
+		throw std::out_of_range("Invalid block lenght: The end of the block is outside of the file.");
+	}
+
+	i = ParseHeaderBlock(i);
+	while (i < (in_len - 1)) {
 		char block_type = parse->raw_data[i++];
 
-		len_t block_len = ReadLength(i); //TODO: Check if read size is correct
+		len_t block_len = ReadLength(i); 
 		i += LENGTH_BLOCK_SIZE;
+		if (i + block_len > in_len) {  // TODO: Check if the check is correct :)
+			throw std::out_of_range("Invalid block lenght: The end of the block is outside of the file.");
+		}
 
 		switch (block_type) {
-		case 1:
-			i = ParseHeaderBlock(i);
-			break;
 		case 2:
 			i = ParseCreditsBlock(i);
 			break;
@@ -35,8 +49,11 @@ len_t Parser::ParseHeaderBlock(len_t current_idx) {
 		throw std::invalid_argument("Invalid file type!");
 	current_idx += FILE_TYPE_SIZE;
 
-	len_t header_size = ReadLength(current_idx); //TODO: Check if read size is correct
+	len_t header_size = ReadLength(current_idx);
 	current_idx += LENGTH_BLOCK_SIZE;
+	if (header_size != CAFF_HEADER_SIZE) {
+		throw std::out_of_range("The CAFF header has an invalid size.");
+	}
 
 	len_t num_anim = ReadLength(current_idx); //TODO: Check if read image count is correct
 	parse->SetImageCount(num_anim);
