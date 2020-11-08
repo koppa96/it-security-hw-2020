@@ -12,14 +12,11 @@
 
 int main()
 {
+    //Default input/output path:
     std::string input_path = "../../files/1.caff";
-    std::string output_path = "../../output/asd_inout.bmp";
+    std::string output_path = "../../output/caff1.bmp";
+    //Reading input
 #if INOUT_PIPING
-    //FILE* stream_r, * stream_w;
-    //Change the second (NULL) parameters to file names if you want to redirect stdin/stdout to a file
-    //freopen_s(&stream_r, NULL, "rb", stdin);
-    //freopen_s(&stream_w, NULL, "wb", stdout);
-
     std::string anim_str{ std::istreambuf_iterator<char>(std::cin), std::istreambuf_iterator<char>() };
     const char* in_buff = anim_str.c_str();
     const int in_len = anim_str.length() + 1;
@@ -47,15 +44,12 @@ int main()
     {
         std::cout << "Invalid CAFF file: " << e.getMessage() << std::endl;
     }
-
 #else
     const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
 #endif //INOUT_PIPING
     //Writing image, releasing resources
 #if INOUT_PIPING
     std::cout.write(out_buff, real_out_len);
-    //fclose(stream_r);
-    //fclose(stream_w);
 #else
     std::ofstream image_out(output_path, std::ios_base::out | std::ios_base::binary);
     image_out.write(out_buff, real_out_len);

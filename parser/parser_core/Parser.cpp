@@ -65,7 +65,6 @@ len_t Parser::ParseHeaderBlock(len_t current_idx) {
 }
 
 len_t Parser::ParseCreditsBlock(len_t current_idx) {
-	//TODO: read and parse date
 	current_idx += DATE_BLOCK_SIZE;
 
 	len_t creator_len = ReadLength(current_idx);
