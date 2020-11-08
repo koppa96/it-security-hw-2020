@@ -5,11 +5,12 @@
 
 Preview ImageBuilder::BuildPreview(ParseImage pi) {
 	auto pixels = pi->GetPixels();
-	len_t size = BMP_HEADER_SIZE + (len_t)pixels.size() * BYTES_PER_PIXEL;
+	auto zero_pad_count = (pi->GetWidth() * BYTES_PER_PIXEL) % BMP_REQUIRED_PAD_SIZE_PER_ROW;
+	len_t size = BMP_HEADER_SIZE + (len_t)pixels.size() * BYTES_PER_PIXEL + pi->GetHeight() * zero_pad_count;
 	imagedata = new unsigned char[size];
 	GenerateBitmapHeader(size);
 	GenerateInformationsHeader(pi);
-	WriteBitmap(pixels, size);
+	WriteBitmap(pixels, pi->GetWidth(), pi->GetHeight(), zero_pad_count);
 	auto image_out = reinterpret_cast<char*>(imagedata);
 	Preview data = std::make_shared<PreviewData>(image_out, size);
 	return data;
@@ -78,17 +79,19 @@ void ImageBuilder::GenerateInformationsHeader(ParseImage pi) {
 	FillWithZeros(46, 54);
 }
 
-void ImageBuilder::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_size) {
-	len_t base_idx;
-	auto n = pixels.size();
-	for (int i = 0; i < n; i++) {
-		//len_t base_idx = image_size - (len_t)i * BYTES_PER_PIXEL - 1;
-		base_idx = (len_t)i * BYTES_PER_PIXEL + BMP_HEADER_SIZE;
-		//imagedata[base_idx] = pixels[n - i - 1].b;
-		//imagedata[base_idx + 1] = pixels[n - i - 1].g;
-		//imagedata[base_idx + 2] = pixels[n - i - 1].r;
-		imagedata[base_idx] = pixels[i].b;
-		imagedata[base_idx + 1] = pixels[i].g;
-		imagedata[base_idx + 2] = pixels[i].r;
+void ImageBuilder::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_width, len_t image_height, len_t zero_pad_count) {
+	auto full_width = image_width * BYTES_PER_PIXEL + zero_pad_count;
+	for (int i = 0; i < image_height; i++) {	//sorok
+		for (int j = 0; j < image_width; j++) {	//oszlopok
+			len_t base_idx = BMP_HEADER_SIZE + i * full_width + (len_t)j * BYTES_PER_PIXEL;
+			len_t pixel_idx = (image_height - i - 1) * image_width + j;
+			//len_t pixel_idx = i * image_width + j;
+			imagedata[base_idx] = pixels[pixel_idx].b;
+			imagedata[base_idx + 1] = pixels[pixel_idx].g;
+			imagedata[base_idx + 2] = pixels[pixel_idx].r;
+		}
+		for (int k = 0; k < zero_pad_count; k++) {
+			imagedata[((len_t)i + 1) * image_width + k] = 0;
+		}
 	}
 }
