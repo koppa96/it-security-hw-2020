@@ -30,6 +30,9 @@ Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 			throw std::invalid_argument("Invalid block id!");
 		}
 	}
+	if (parse->GetImagesCurrentSize() < parse->GetImageCount()) {
+		throw std::overflow_error("Image count doesn't match the actual number of images!");
+	}
 	return parse;
 }
 
@@ -54,7 +57,7 @@ len_t Parser::ParseHeaderBlock(len_t current_idx) {
 		throw std::out_of_range("The CAFF header has an invalid size.");
 	}
 
-	len_t num_anim = ReadLength(current_idx); //TODO: Check if read image count is correct
+	len_t num_anim = ReadLength(current_idx);
 	parse->SetImageCount(num_anim);
 	current_idx += LENGTH_BLOCK_SIZE;
 
@@ -65,8 +68,12 @@ len_t Parser::ParseCreditsBlock(len_t current_idx) {
 	//TODO: read and parse date
 	current_idx += DATE_BLOCK_SIZE;
 
-	len_t creator_len = ReadLength(current_idx); //TODO: Check if read length is correct
+	len_t creator_len = ReadLength(current_idx);
+	if (creator_len > MAX_ALLOWED_CREATOR_LENGTH || creator_len < 0) {
+		throw std::out_of_range("Invalid creator length!");
+	}
 	current_idx += LENGTH_BLOCK_SIZE;
+
 
 	std::string creator(parse->raw_data + current_idx, parse->raw_data + current_idx + creator_len);
 	parse->SetCreatorName(creator);
@@ -76,7 +83,11 @@ len_t Parser::ParseCreditsBlock(len_t current_idx) {
 }
 
 len_t Parser::ParseAnimationBlock(len_t current_idx) {
-	len_t duration = ReadLength(current_idx); //TODO: Check if read duration is correct		//The read value is probably not correct atm, need to check later, it's ok for now
+	if (parse->GetImagesCurrentSize() >= parse->GetImageCount()) {
+		throw std::overflow_error("Image count doesn't match the actual number of images!");
+	}
+
+	len_t duration = ReadLength(current_idx);
 	current_idx += LENGTH_BLOCK_SIZE;
 
 	auto img = ParseCIFF(current_idx);
@@ -104,11 +115,15 @@ ParseImage Parser::ParseCIFF(len_t current_idx) {
 		throw std::invalid_argument("Invalid file type!");
 	current_idx += FILE_TYPE_SIZE;
 
-	len_t header_size = ReadLength(current_idx); //TODO: Check if read size is correct
+	len_t header_size = ReadLength(current_idx);
+	if (header_size > MAX_ALLOWED_CIFF_HEADER_SIZE)
+		throw std::invalid_argument("Invalid image header size!");
 	len_t header_end = start_idx + header_size;
 	current_idx += LENGTH_BLOCK_SIZE;
 
-	len_t content_size = ReadLength(current_idx); //TODO: Check if read size is correct
+	len_t content_size = ReadLength(current_idx);
+	if (content_size > MAX_ALLOWED_CIFF_CONTENT_SIZE)
+		throw std::invalid_argument("Invalid image content size!");
 	current_idx += LENGTH_BLOCK_SIZE;
 
 	len_t width = ReadLength(current_idx);
@@ -122,7 +137,7 @@ ParseImage Parser::ParseCIFF(len_t current_idx) {
 
 	int i = 0;
 	while (parse->raw_data[current_idx + i] != '\n') {
-		if(((len_t)current_idx + i) > header_end)
+		if(((len_t)current_idx + i) > header_end || i > MAX_ALLOWED_CIFF_CAPTION_LENGTH)
 			throw std::invalid_argument("Caption must end with a \\n!");
 		i++;
 	}
@@ -137,26 +152,28 @@ ParseImage Parser::ParseCIFF(len_t current_idx) {
 		while (parse->raw_data[current_idx + i + j] != '\0') {
 			if (((len_t)current_idx + i + j) > (start_idx + header_size))
 				throw std::invalid_argument("Last image tag must end with a \\0!");
+			if (i > MAX_ALLOWED_CIFF_TAG_LENGTH)
+				throw std::invalid_argument("Image tags must end with a \\0!");
 			j++;
 		}
 		std::string tag(parse->raw_data + current_idx + i, parse->raw_data + current_idx + i + j);
 		image->AddTag(tag);
 		i += j + 1;
 	}
-	current_idx = header_end;
+	current_idx += i;
+
+	if (current_idx != header_end)
+		throw std::invalid_argument("Invalid image header size!");
 
 	len_t pixel_count = width * height;
 	for (i = 0; i < pixel_count; i++) {
-		len_t base_idx = current_idx + (len_t)i * BYTES_PER_PIXEL;
-
-		if ((base_idx + BYTES_PER_PIXEL - 1) > parse->raw_data_len)
+		if ((current_idx + BYTES_PER_PIXEL - 1) > parse->raw_data_len)
 			throw std::out_of_range("Pixel count not matching image size!");
 
-		Pixel p(parse->raw_data[base_idx], parse->raw_data[base_idx + 1], parse->raw_data[base_idx + 2]);
+		Pixel p(parse->raw_data[current_idx], parse->raw_data[current_idx + 1], parse->raw_data[current_idx + 2]);
 		image->AddPixel(p);
+		current_idx += BYTES_PER_PIXEL;
 	}
-
-	current_idx += content_size;
 
 	image->data_start_idx = start_idx;
 	image->data_end_idx = current_idx;

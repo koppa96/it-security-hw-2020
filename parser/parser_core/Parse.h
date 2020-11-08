@@ -26,6 +26,8 @@ public:
 
 	const std::string& GetCreatorName() const;
 	void SetCreatorName(std::string name);
+
+	size_t GetImagesCurrentSize() const;
 };
 
 using Parse = std::shared_ptr<ParseData>;
