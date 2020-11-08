@@ -31,7 +31,7 @@ Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 		}
 	}
 	if (parse->GetImagesCurrentSize() < parse->GetImageCount()) {
-		throw std::overflow_error("Image count doesn't match the actual number of images!");
+		throw std::underflow_error("Image count doesn't match the actual number of images!");
 	}
 	return parse;
 }
