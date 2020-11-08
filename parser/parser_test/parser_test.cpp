@@ -3,8 +3,8 @@
 #include <fstream>
 #include "../parser_core/LibApi.h"
 
-
-void readAndparseAnim() {
+int main()
+{
     //Reading whole file at once
     std::ifstream anim_in("../../files/1.caff", std::ios_base::in | std::ios_base::binary);
     std::string anim_str{ std::istreambuf_iterator<char>(anim_in), std::istreambuf_iterator<char>() };
@@ -22,9 +22,4 @@ void readAndparseAnim() {
     anim_in.close();
     image_out.close();
     delete[] out_buff;
-}
-
-int main()
-{
-    readAndparseAnim();
 }
