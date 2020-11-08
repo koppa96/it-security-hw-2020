@@ -1,7 +1,7 @@
 # CAFF parser
 
 ## Building
-Normally the program will take a set input and output file and treat it as it's default input/output. If you want to pipe input from/to the standard input/output, read the [Building with input piping]() paragraph.
+Normally the program will take a set input and output file and treat it as it's default input/output. If you want to pipe input from/to the standard input/output, read the [Building with input piping](https://github.com/koppa96/it-security-hw-2020/blob/main/README.md#building-with-input-piping-eg-for-fuzzing) paragraph.
 
 ### Building with Visual Studio
 - Make sure parser_test is the startup project
