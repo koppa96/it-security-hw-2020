@@ -1,7 +1,7 @@
 CXX = g++
 
 compilation:
-	${CXX} parser_core/*.h parser_core/*.cpp parser_test/*.cpp -o caffparser
+	${CXX} parser_core/*.cpp parser_test/*.cpp -o Debug/caffparser
 
 outputdir:
 	mkdir -p output
