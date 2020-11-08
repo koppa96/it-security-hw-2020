@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "LibApi.h"
 #include "Parse.h"
 #include "Parser.h"
@@ -7,7 +6,7 @@
 #include <string>
 
 len_t CopyBytes(const char* from, len_t length, char* to, len_t max_len) {
-    int n = min(length, max_len);
+    int n = std::min(length, max_len);
     for (int i = 0; i < n; i++) {
         to[i] = from[i];
     }

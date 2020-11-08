@@ -1,14 +1,14 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "LibApi.h"
+#include "../parser_core/LibApi.h"
 
 //Function to preview CAFF file content, only used for testing purposes
 void readAnim() {
     int buff_len = 1;
     //char* fbuff = new char[buff_len];
     std::ifstream anim_in;
-    anim_in.open("..\\..\\files\\1.caff", std::ios_base::in | std::ios_base::binary);
+    anim_in.open("../../files/1.caff", std::ios_base::in | std::ios_base::binary);
     char c;
     bool prev_letter = false;
     for (int i = 0; i < 128; i++) {
@@ -32,7 +32,7 @@ void readAnim() {
 
 void readAndparseAnim() {
     //Reading whole file at once
-    std::ifstream anim_in("..\\..\\files\\1.caff", std::ios_base::in | std::ios_base::binary);
+    std::ifstream anim_in("../../files/1.caff", std::ios_base::in | std::ios_base::binary);
     std::string anim_str{ std::istreambuf_iterator<char>(anim_in), std::istreambuf_iterator<char>() };
     //Converting to c-style string to pass for parsing
     const char* in_buff = anim_str.c_str();
@@ -43,7 +43,7 @@ void readAndparseAnim() {
     //Passing input for parsing
     const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
     //Writing image, releasing resources
-    std::ofstream image_out("..\\..\\output\\asd.bmp");
+    std::ofstream image_out("../../output/asd.bmp");
     image_out.write(out_buff, real_out_len);
     anim_in.close();
     image_out.close();
