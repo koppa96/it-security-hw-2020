@@ -94,3 +94,7 @@ void ImageBuilder::WriteBitmap(const std::vector<Pixel>& pixels, len_t image_wid
 		}
 	}
 }
+
+void ImageBuilder::WriteInt(len_t starting_idx, len_t number) {
+	WriteInt(starting_idx, (unsigned int)number);
+}

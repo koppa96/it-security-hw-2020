@@ -15,45 +15,17 @@ public:
 	const unsigned char* raw_data;
 	const len_t raw_data_len;
 
-	ParseData(const unsigned char* in_buffer, len_t in_len) : raw_data{ in_buffer }, raw_data_len{ in_len } {
+	ParseData(const unsigned char* in_buffer, len_t in_len) : raw_data{ in_buffer }, raw_data_len{ in_len } { }
 
-	}
+	const ParseImage& GetPreviewImage();
 
-	const ParseImage& GetPreviewImage() {
-		if (images.size() < 1)
-			throw std::underflow_error("Animation contains no images!");
+	void AddImage(const ParseImage& image, len_t duration);
 
-		if (preview_index < 0 || preview_index > images.size())
-			preview_index = 0;
+	const len_t GetImageCount() const;
+	void SetImageCount(len_t img_count);
 
-		return images[preview_index];
-	}
-
-	void AddImage(const ParseImage& image, len_t duration) {
-		images.push_back(image);
-		if (duration > max_image_duration) {
-			max_image_duration = duration;
-			preview_index = images.size() - 1;
-		}
-	}
-
-	//Getters/setters:
-
-	const len_t GetImageCount() const {
-		return image_count;
-	}
-
-	void SetImageCount(len_t img_count) {
-		image_count = img_count;
-	}
-
-	const std::string& GetCreatorName() const {
-		return creator_name;
-	}
-
-	void SetCreatorName(std::string name) {
-		creator_name = name;
-	}
+	const std::string& GetCreatorName() const;
+	void SetCreatorName(std::string name);
 };
 
 using Parse = std::shared_ptr<ParseData>;
