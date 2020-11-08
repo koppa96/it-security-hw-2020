@@ -10,21 +10,14 @@ Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 		throw std::invalid_argument("The file must start with a CAFF header.");
 	}
 
-	len_t block_len = ReadLength(i);
-	i += LENGTH_BLOCK_SIZE;
-	if (i + block_len > in_len) {  // TODO: Check if the check is correct :)
-		throw std::out_of_range("Invalid block lenght: The end of the block is outside of the file.");
-	}
+	i = ReadBlockLength(i, in_len);
 
 	i = ParseHeaderBlock(i);
+
 	while (i < (in_len - 1)) {
 		char block_type = parse->raw_data[i++];
 
-		len_t block_len = ReadLength(i); 
-		i += LENGTH_BLOCK_SIZE;
-		if (i + block_len > in_len) {  // TODO: Check if the check is correct :)
-			throw std::out_of_range("Invalid block lenght: The end of the block is outside of the file.");
-		}
+		i = ReadBlockLength(i, in_len);
 
 		switch (block_type) {
 		case 2:
@@ -38,6 +31,15 @@ Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 		}
 	}
 	return parse;
+}
+
+len_t Parser::ReadBlockLength(len_t current_idx, len_t in_len) {
+	len_t block_len = ReadLength(current_idx);
+	current_idx += LENGTH_BLOCK_SIZE;
+	if (current_idx + block_len > in_len) {
+		throw std::out_of_range("Invalid block length: The end of the block is outside of the file.");
+	}
+	return current_idx;
 }
 
 len_t Parser::ParseHeaderBlock(len_t current_idx) {
