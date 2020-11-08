@@ -32,3 +32,9 @@ After issuing the make command while sitting in the parser directory:
 $ cd Debug
 $ ./caffparser
 ```
+
+## Project structure
+The project's structure can be broken down to 3 main pieces:
+- parser_core: the main parsing functions. It exports LibApi.h when used an external library.
+- parser_test: C++ test code that uses parser_core for parsing. It serves as a main project for standalone builds of the parser.
+- parser_test_cs: short C# example on how to use parser_core outside the C++ environment as a dynamic library.
