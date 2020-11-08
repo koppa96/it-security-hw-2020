@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include <fstream>
 #include "Defines.h"
 #include "ParseImage.h"
 #include "Preview.h"

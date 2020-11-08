@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+#include <cmath>
 #include "Defines.h"
 #include "Parse.h"
 #include "ParseImage.h"

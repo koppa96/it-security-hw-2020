@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Defines.h"
 #include <memory>
+#include "Defines.h"
 
 struct PreviewData {
 	char* data;

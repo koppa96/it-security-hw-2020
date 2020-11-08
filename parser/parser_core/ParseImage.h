@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Defines.h"
-#include "Pixel.h"
 #include <memory>
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include "Defines.h"
+#include "Pixel.h"
 
 class ImageParseData {
 	std::vector<std::string> tags;

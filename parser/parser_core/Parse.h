@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ParseImage.h"
 #include <memory>
 #include <string>
 #include <vector>
+#include "ParseImage.h"
 
 class ParseData {
 	len_t image_count = 0;

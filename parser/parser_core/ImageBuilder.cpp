@@ -1,6 +1,4 @@
 #include "ImageBuilder.h"
-#include <vector>
-#include <fstream>
 
 Preview ImageBuilder::BuildPreview(ParseImage pi) {
 	auto pixels = pi->GetPixels();

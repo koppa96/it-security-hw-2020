@@ -1,6 +1,4 @@
 #include "Parser.h"
-#include <stdexcept>
-#include <cmath>
 
 Parse& Parser::GenerateParse(const char* in_buffer, len_t in_len) {
 	const unsigned char* raw_data_converted = reinterpret_cast<const unsigned char*>(in_buffer);	//Making sure input data is treated as unsigned
