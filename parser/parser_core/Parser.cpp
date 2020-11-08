@@ -127,7 +127,7 @@ ParseImage Parser::ParseCIFF(len_t current_idx) {
 		i++;
 	}
 	std::string caption(parse->raw_data + current_idx, parse->raw_data + current_idx + i);
-	current_idx += i + 1;
+	current_idx += (len_t)i + 1;
 
 	ParseImage image = std::make_shared<ImageParseData>(caption, width, height);
 
