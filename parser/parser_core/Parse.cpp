@@ -1,8 +1,9 @@
 #include "Parse.h"
+#include "Exceptions.h"
 
 const ParseImage& ParseData::GetPreviewImage() {
 	if (images.size() < 1)
-		throw std::underflow_error("Animation contains no images!");
+		throw caff_parser_exception("Animation contains no images!");
 
 	if (preview_index < 0 || preview_index > images.size())
 		preview_index = 0;
@@ -13,7 +14,7 @@ const ParseImage& ParseData::GetPreviewImage() {
 void ParseData::AddImage(const ParseImage& image, len_t duration) {
 	images.push_back(image);
 	if (images.size() > image_count) {
-		throw std::overflow_error("Too many images!");
+		throw caff_parser_exception("Too many images!");
 	}
 	if (duration > max_image_duration) {
 		max_image_duration = duration;
