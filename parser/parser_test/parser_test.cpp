@@ -6,29 +6,17 @@
 
 #if FUZZING
     #include <iostream>
-    #include <stdexcept>
-    #ifdef WIN32
-        #include <fcntl.h>
-        #include <io.h>
-    #endif
 #endif
-
 
 int main()
 {
     std::string input_path = "../../files/1.caff";
     std::string output_path = "../../output/asd_inout.bmp";
 #if FUZZING
-    #ifdef WIN32
-        _setmode(_fileno(stdin), _O_BINARY);
-        _setmode(_fileno(stdout), _O_BINARY);
-    #else
-        throw std::logic_error("Functionality not implemented for non-Windows platforms!");
-    #endif  //WIN32
-    //The following 3 lines (+2 the fcloses at the end of the function) can be used for testing by redirecting stdin/stdout to read from/write to a file
-    //FILE *stream_r, *stream_w;
-    //freopen_s(&stream_r, input_path.c_str(), "rb", stdin);
-    //freopen_s(&stream_w, output_path.c_str(), "wb", stdout);
+    FILE* stream_r, * stream_w;
+    //Change the second (NULL) parameters to file names if you want to redirect stdin/stdout to a file
+    freopen_s(&stream_r, NULL, "rb", stdin);
+    freopen_s(&stream_w, NULL, "wb", stdout);
     std::string anim_str{ std::istreambuf_iterator<char>(std::cin), std::istreambuf_iterator<char>() };
 #else
     //Reading whole file at once
@@ -48,9 +36,8 @@ int main()
     //Writing image, releasing resources
 #if FUZZING
     std::cout.write(out_buff, real_out_len);
-    //These 2 linges are for testing, see details at the top of the function
-    //fclose(stream_r);
-    //fclose(stream_w);
+    fclose(stream_r);
+    fclose(stream_w);
 #else
     std::ofstream image_out(output_path, std::ios_base::out | std::ios_base::binary);
     image_out.write(out_buff, real_out_len);
