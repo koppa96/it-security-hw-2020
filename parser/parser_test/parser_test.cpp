@@ -17,7 +17,7 @@ void readAndparseAnim() {
     //Passing input for parsing
     const int real_out_len = ParseAnimation(in_buff, in_len, out_buff, out_len);
     //Writing image, releasing resources
-    std::ofstream image_out("../../output/asd.bmp");
+    std::ofstream image_out("../../output/asd.bmp", std::ios_base::out | std::ios_base::binary);
     image_out.write(out_buff, real_out_len);
     anim_in.close();
     image_out.close();
