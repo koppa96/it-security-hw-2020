@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  caffshop.api:
+    container_name: caffshop.api
+    image: ${DOCKER_REGISTRY-}caffshopapi
+    build:
+      context: .
+      dockerfile: CAFFShop.Api/Dockerfile
+
+  caffshop.es:
+    container_name: caffshop.es
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+
+  caffshop.kibana:
+    container_name: caffshop.kibana
+    image: docker.elastic.co/kibana/kibana:7.7.0
+
+  caffshop.mssql:
+    container_name: caffshop.mssql
+    image: mcr.microsoft.com/mssql/server:2017-latest
