@@ -1,12 +1,12 @@
 ﻿@page
 @model LoginWith2faModel
 @{
-    ViewData["Title"] = "Two-factor authentication";
+    ViewData["Title"] = "Kétfaktoros hitelesítés";
 }
 
 <h1>@ViewData["Title"]</h1>
 <hr />
-<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
+<p>A fiókod kétfaktoros hitelesítéssel védett. Kérjük add meg az authentikátor kódodat!</p>
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
@@ -26,14 +26,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Log in</button>
+                <button type="submit" class="btn btn-primary">Bejelentkezés</button>
             </div>
         </form>
     </div>
 </div>
 <p>
-    Don't have access to your authenticator device? You can
-    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">log in with a recovery code</a>.
+    Nincs nálad az eszközöd? Jelentkezz be
+    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">helyreállító kóddal.</a>.
 </p>
 
 @section Scripts {

@@ -32,14 +32,14 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Az {0} legalább {2} és legfeljebb {1} hosszú lehet.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Jelszó")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Jelszó megerősítése")]
+            [Compare("NewPassword", ErrorMessage = "A jelszavak nem egyeznek.")]
             public string ConfirmPassword { get; set; }
         }
 
