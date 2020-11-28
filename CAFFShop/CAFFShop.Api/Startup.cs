@@ -28,7 +28,8 @@ namespace CAFFShop.Api
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddIdentity<User, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<CaffShopContext>();
+                .AddEntityFrameworkStores<CaffShopContext>()
+                .AddDefaultTokenProviders();
             
             services.AddRazorPages();
         }

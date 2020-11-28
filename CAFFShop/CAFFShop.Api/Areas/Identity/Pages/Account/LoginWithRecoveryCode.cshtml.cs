@@ -34,7 +34,7 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
             [BindProperty]
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "Recovery Code")]
+            [Display(Name = "Helyreállító kód")]
             public string RecoveryCode { get; set; }
         }
 

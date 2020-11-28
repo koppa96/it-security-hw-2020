@@ -30,16 +30,18 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
+            [Display(Name = "E-mail cím")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Az {0} legalább {2} és legfeljebb {1} hosszú lehet.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Jelszó")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Jelszó megerősítése")]
+            [Compare("Password", ErrorMessage = "A jelszavak nem egyeznek.")]
             public string ConfirmPassword { get; set; }
 
             public string Code { get; set; }

@@ -44,7 +44,7 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                StatusMessage = "Error changing email.";
+                StatusMessage = "Hiba történt az e-mail cím megváltoztatása során.";
                 return Page();
             }
 
@@ -53,12 +53,12 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded)
             {
-                StatusMessage = "Error changing user name.";
+                StatusMessage = "Hiba történt a felhasználónév megváltoztatása során.";
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Thank you for confirming your email change.";
+            StatusMessage = "Köszönjük, hogy megerősítetted az e-mail címed.";
             return Page();
         }
     }

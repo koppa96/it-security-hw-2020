@@ -1,7 +1,7 @@
 ﻿@page
 @model GenerateRecoveryCodesModel
 @{
-    ViewData["Title"] = "Generate two-factor authentication (2FA) recovery codes";
+    ViewData["Title"] = "Kétfaktoros authentikáció visszaállító kódok";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
@@ -10,18 +10,18 @@
 <div class="alert alert-warning" role="alert">
     <p>
         <span class="glyphicon glyphicon-warning-sign"></span>
-        <strong>Put these codes in a safe place.</strong>
+        <strong>Az alábbi kódokat mentsd el biztonságos helyre.</strong>
     </p>
     <p>
-        If you lose your device and don't have the recovery codes you will lose access to your account.
+        Ha elveszíted az eszközödet, és nincsen meg a helyreállító kódod, a fiókodhoz nem fogsz tudni többé hozzáférni.
     </p>
     <p>
-        Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
-        used in an authenticator app you should <a asp-page="./ResetAuthenticator">reset your authenticator keys.</a>
+        Új helyreállító kód generálása nem változtatja meg a kulcsaid. Ha meg szeretnéd változtatni a kulcsaid az authentikátorban
+        <a asp-page="./ResetAuthenticator">kattints ide.</a>
     </p>
 </div>
 <div>
     <form method="post" class="form-group">
-        <button class="btn btn-danger" type="submit">Generate Recovery Codes</button>
+        <button class="btn btn-danger" type="submit">Helyreállító kódok generálása</button>
     </form>
 </div>
