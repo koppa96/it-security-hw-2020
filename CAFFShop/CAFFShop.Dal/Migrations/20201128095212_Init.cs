@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CAFFShop.Api.Data.Migrations
+namespace CAFFShop.Dal.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +11,7 @@ namespace CAFFShop.Api.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -26,7 +25,7 @@ namespace CAFFShop.Api.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -48,12 +47,24 @@ namespace CAFFShop.Api.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Path = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -73,8 +84,8 @@ namespace CAFFShop.Api.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -96,7 +107,7 @@ namespace CAFFShop.Api.Data.Migrations
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,8 +124,8 @@ namespace CAFFShop.Api.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,7 +148,7 @@ namespace CAFFShop.Api.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -152,6 +163,123 @@ namespace CAFFShop.Api.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Animations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Price = table.Column<int>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    FileId = table.Column<Guid>(nullable: false),
+                    PreviewId = table.Column<Guid>(nullable: true),
+                    AuthorId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Animations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Animations_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Animations_Files_FileId",
+                        column: x => x.FileId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Animations_Files_PreviewId",
+                        column: x => x.PreviewId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnimationPurchases",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BillingName = table.Column<string>(nullable: true),
+                    BillingAddress = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    PriceAtPurchase = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    AnimationId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnimationPurchases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnimationPurchases_Animations_AnimationId",
+                        column: x => x.AnimationId,
+                        principalTable: "Animations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnimationPurchases_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    AnimationId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Animations_AnimationId",
+                        column: x => x.AnimationId,
+                        principalTable: "Animations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnimationPurchases_AnimationId",
+                table: "AnimationPurchases",
+                column: "AnimationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnimationPurchases_UserId",
+                table: "AnimationPurchases",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animations_AuthorId",
+                table: "Animations",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animations_FileId",
+                table: "Animations",
+                column: "FileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Animations_PreviewId",
+                table: "Animations",
+                column: "PreviewId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -191,10 +319,23 @@ namespace CAFFShop.Api.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AnimationId",
+                table: "Comments",
+                column: "AnimationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AnimationPurchases");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -211,10 +352,19 @@ namespace CAFFShop.Api.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Animations");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Files");
         }
     }
 }

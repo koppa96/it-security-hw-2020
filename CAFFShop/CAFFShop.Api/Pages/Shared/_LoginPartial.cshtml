@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<CAFFShop.Dal.Entities.User> SignInManager
+@inject UserManager<CAFFShop.Dal.Entities.User> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
