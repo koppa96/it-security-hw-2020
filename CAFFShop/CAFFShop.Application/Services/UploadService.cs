@@ -60,13 +60,14 @@ namespace CAFFShop.Application.Services
 		private async Task<Guid> SaveFile(string path, string fileExtension, byte[] content)
 		{
 			var id = Guid.NewGuid();
-			var filePath = $"{path}/{id}.{fileExtension}";
+			var fileName = $"{id}.{fileExtension}";
+			var filePath = $"{path}/{fileName}";
 			await File.WriteAllBytesAsync(filePath, content);
 
 			DbContext.Files.Add(new Dal.Entities.File()
 			{
 				Id = id,
-				Path = filePath
+				Path = fileName
 			});
 
 			return id;
