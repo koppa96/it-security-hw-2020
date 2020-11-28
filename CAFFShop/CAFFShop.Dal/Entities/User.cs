@@ -6,6 +6,7 @@ namespace CAFFShop.Dal.Entities
 {
     public class User : IdentityUser<Guid>
     {
+        public bool IsActive { get; set; }
         public virtual ICollection<AnimationPurchase> AnimationPurchases { get; set; }
         public virtual ICollection<Animation> UploadedAnimations { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
