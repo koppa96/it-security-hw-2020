@@ -1,6 +1,4 @@
-﻿body {
-}
-
+﻿
 .animation-detail-container {
     display: flex;
     justify-content: space-between;
@@ -9,15 +7,38 @@
 
 
 .comments-container {
-    margin-top: 20px;
-
-    width: 75%;
+    margin-top: 40px;
+    width: 75%
 }
 
 .no-comment-container {
-
+    font-style: italic
 }
 
 .comment-card {
     width: 100%;
+}
+
+.comment-row {
+    margin: auto;
+    width: 80%;
+}
+
+.comment-write-container {
+    width: 100%
+}
+
+textarea {
+    margin-bottom: 10px;
+}
+
+.comment-submit-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.comment-header {
+
 }
