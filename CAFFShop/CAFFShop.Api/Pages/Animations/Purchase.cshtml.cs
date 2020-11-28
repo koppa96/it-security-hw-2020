@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CAFFShop.Dal;
-using CAFFShop.Dal.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace CAFFShop.Api.Pages.Animations
 {

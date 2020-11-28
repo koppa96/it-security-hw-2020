@@ -1,20 +1,19 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using CAFFShop.Api.Infrastructure;
+using CAFFShop.Api.Services;
+using CAFFShop.Application.Services.Implementations;
+using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
 using System;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using CAFFShop.Api.Infrastructure;
-using CAFFShop.Application.Services.Interfaces;
-using CAFFShop.Api.Services;
-using CAFFShop.Api.Infrastructure.Filters;
-using CAFFShop.Application.Services.Implementations;
-using Microsoft.AspNetCore.Http;
 
 namespace CAFFShop.Api
 {
