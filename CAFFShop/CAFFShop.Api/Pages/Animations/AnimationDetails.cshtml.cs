@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,14 @@ namespace CAFFShop.Api.Pages.Animations
     public class AnimationDetailsModel : PageModel
     {
         private readonly CaffShopContext context;
+        public readonly ICanDownloadService canDownloadService;
+
         public AnimationDetailsDTO AnimationDetails { get; set; }
 
-        public AnimationDetailsModel(CaffShopContext context)
+        public AnimationDetailsModel(CaffShopContext context, ICanDownloadService canDownloadService)
         {
             this.context = context;
+            this.canDownloadService = canDownloadService;
         }
 
         public async Task OnGetAsync(Guid? id)
@@ -48,7 +52,8 @@ namespace CAFFShop.Api.Pages.Animations
                     UserName = c.User.UserName,
                     CreationTime = c.CreationTime,
                     Text = c.Text
-                })
+                }),
+                CanDownloadCAFF = await canDownloadService.CanDownload(animation)
             };            
         }
     }
@@ -62,6 +67,7 @@ namespace CAFFShop.Api.Pages.Animations
         public DateTime CreationTime { get; set; }
         public string AuthorName { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
+        public bool CanDownloadCAFF { get; set; }
 
     }
 

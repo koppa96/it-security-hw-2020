@@ -28,16 +28,23 @@
                 
             </div>
             <div class="col">
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <div class="animation-detail-container">
                             <strong>Ár</strong>
                             @Model.AnimationDetails.Price
                         </div>
                     </div>
-                    <div class="card-body">
-                        @if (HttpContext.User.Identity.IsAuthenticated && )
-                        <button></button>
+                    <div class="card-body d-flex justify-content-center">
+                        @if (!Model.AnimationDetails.CanDownloadCAFF)
+                        {
+                            <a href="#" class="btn btn-success">Letöltés</a>
+                        }
+                        else
+                        {
+                            <a href="/animations/@(Model.AnimationDetails.Id)/purchase" class="btn btn-primary">Vásárlás</a>
+                        }
+
                     </div>
 
                 </div>
@@ -53,6 +60,31 @@
             </div>
 
         </div>
+        <div class="comments-container">
+            <h3>Kommentek</h3>
+
+            @if (Model.AnimationDetails.Comments.Count() == 0)
+            {
+                <div class="row">
+                    <h4>No komment</h4>
+                </div>
+                
+            }
+
+            @foreach (var comment in Model.AnimationDetails.Comments)
+            {
+                <div class="row">
+                    <div class="card comment-card">
+                        <div class="card-header">ddddd</div>
+                        <div class="card-body">dddd</div>
+                        <div class="card-footer">dddd</div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
     </div>
 
 
