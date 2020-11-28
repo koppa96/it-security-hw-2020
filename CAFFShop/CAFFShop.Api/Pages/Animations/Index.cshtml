@@ -14,7 +14,7 @@
             item.Own ? "own-anim-card" : item.HasPurchased ? "purchased-anim-card" : "bg-light" 
         )"
          style="width: 18rem;">
-        <img class="card-img-top" src="/images/placeholder.png" alt="Animation preview">
+        <img class="card-img-top" src="/previews/@(item.Preview)" alt="Animation preview">
         <div class="card-body">
             <h5 class="card-title">
                 @Html.DisplayFor(modelItem => item.Name)

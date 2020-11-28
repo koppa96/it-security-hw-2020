@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
+using System.Security.Claims;
+using CAFFShop.Dal.Constants;
 
 namespace CAFFShop.Api.Pages.Animations
 {
@@ -23,9 +25,15 @@ namespace CAFFShop.Api.Pages.Animations
 
         public IEnumerable<AnimationReviewDto> Animations { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (!HttpContext.User.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value == RoleTypes.Admin))
+            {
+                return RedirectToPage("/Animations/Index");
+            }
+
             LoadAnimations();
+            return Page();
         }
 
         private void LoadAnimations()
@@ -33,6 +41,7 @@ namespace CAFFShop.Api.Pages.Animations
             Animations = _context
                 .Animations
                 .Include(a => a.Author)
+                .Include(a => a.Preview)
                 .Where(a => a.ReviewState == ReviewState.Pending)
                 .Select(a => new AnimationReviewDto
                 {
@@ -41,13 +50,19 @@ namespace CAFFShop.Api.Pages.Animations
                     Description = a.Description,
                     CreationDate = a.CreationTime.ToString("G"),
                     AuthorName = a.Author.UserName,
-                    Price = a.Price
+                    Price = a.Price,
+                    Preview = a.Preview.Path
                 });
         }
 
         public async Task<IActionResult> OnPostReject(string id)
         {
-            if(Guid.TryParse(id, out Guid animId))
+            if(!HttpContext.User.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value == RoleTypes.Admin))
+            {
+                return RedirectToPage("/Animations/Index");
+            }
+
+            if (Guid.TryParse(id, out Guid animId))
             {
                 var anim = await _context.Animations.FindAsync(animId);
                 anim.ReviewedById = identityService.GetUserId();
@@ -60,6 +75,11 @@ namespace CAFFShop.Api.Pages.Animations
 
         public async Task<IActionResult> OnPostApprove(string id)
         {
+            if (!HttpContext.User.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value == RoleTypes.Admin))
+            {
+                return RedirectToPage("/Animations/Index");
+            }
+
             if (Guid.TryParse(id, out Guid animId))
             {
                 var anim = await _context.Animations.FindAsync(animId);
@@ -75,6 +95,7 @@ namespace CAFFShop.Api.Pages.Animations
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Preview { get; set; }
         public string Description { get; set; }
         public string CreationDate { get; set; }
         public string AuthorName { get; set; }

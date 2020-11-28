@@ -11,7 +11,7 @@
     @foreach (var item in Model.Animations)
     {
         <div class="card animation-card bg-light" style="width: 24rem;">
-            <img class="card-img-top" src="/images/placeholder.png" alt="Animation preview">
+            <img class="card-img-top" src="/previews/@(item.Preview)" alt="Animation preview">
             <div class="card-body">
                 <h5 class="card-title">
                     @Html.DisplayFor(modelItem => item.Name)

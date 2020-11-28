@@ -34,6 +34,7 @@ namespace CAFFShop.Api.Pages.Animations
                 .Include(a => a.Preview)
                 .Include(a => a.Comments)
                 .Include(a => a.AnimationPurchases)
+                .Include(a => a.Preview)
                 .Where(a => a.ReviewState == ReviewState.Approved)
                 .Select(a => new AnimationDto
                 {
@@ -46,7 +47,8 @@ namespace CAFFShop.Api.Pages.Animations
                     NumberOfPurchases = a.AnimationPurchases.Count,
                     Price = a.Price,
                     Own = a.AuthorId == userId,
-                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId)
+                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId),
+                    Preview = a.Preview.Path
                 }).ToListAsync();
         }
     }
@@ -63,6 +65,6 @@ namespace CAFFShop.Api.Pages.Animations
         public int Price { get; set; }
         public bool Own { get; set; }
         public bool HasPurchased { get; set; }
-        
+        public string Preview { get; set; }
     }
 }
