@@ -43,6 +43,11 @@ namespace CAFFShop.Api.Pages.Animations
             AnimationDetails = await createAnimationDetailsDTO(animation);
         }
 
+        public Task OnPostDeleteComment(Guid commentId)
+        {
+
+            return Task.CompletedTask;
+        }
 
         public async Task<IActionResult> OnPostAsync(Guid id, string action, string commentId)
         {

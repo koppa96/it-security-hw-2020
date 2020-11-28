@@ -398,3 +398,4 @@ AnimationStore/
 CAFFShop/CAFFShop.Api/wwwroot/previews/
 
 !CAFFShop/parser_core.dll
+/CAFFShop/.sonarqube
