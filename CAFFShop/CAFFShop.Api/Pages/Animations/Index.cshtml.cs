@@ -46,7 +46,8 @@ namespace CAFFShop.Api.Pages.Animations
                     NumberOfPurchases = a.AnimationPurchases.Count,
                     Price = a.Price,
                     Own = a.AuthorId == userId,
-                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId)
+                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId),
+                    PreviewFile = a.Preview.Path
                 }).ToListAsync();
         }
     }
@@ -63,6 +64,6 @@ namespace CAFFShop.Api.Pages.Animations
         public int Price { get; set; }
         public bool Own { get; set; }
         public bool HasPurchased { get; set; }
-        
-    }
+		public string PreviewFile { get; set; }
+	}
 }
