@@ -13,6 +13,8 @@ using CAFFShop.Api.Infrastructure;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Api.Services;
 using CAFFShop.Api.Infrastructure.Filters;
+using CAFFShop.Application.Services.Implementations;
+using Microsoft.AspNetCore.Http;
 
 namespace CAFFShop.Api
 {
@@ -36,8 +38,16 @@ namespace CAFFShop.Api
                 .AddEntityFrameworkStores<CaffShopContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = new PathString("/Identity/Account/Login");
+                config.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
+                config.LogoutPath = new PathString("/Identity/Account/Logout");
+            });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddRazorPages();
         }
