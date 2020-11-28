@@ -99,3 +99,7 @@ body {
 .order-button {
     margin-top: 30px;
 }
+
+.validation-summary-errors li {
+  list-style-type: none;
+}
