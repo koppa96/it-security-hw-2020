@@ -23,18 +23,16 @@ namespace CAFFShop.Api.Pages.Users
 
         [BindProperty]
         public List<UserListModel> Users { get;set; }
-        public bool SaveSuccess { get; set; } = false;
 
         public async Task OnGetAsync()
         {
             Users = await userService.ListUsersAsync();
         }
 
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             await userService.UpdateUserRolesAsync(Users);
-            Users = await userService.ListUsersAsync();
-            SaveSuccess = true;
+            return RedirectToPage();
         }
     }
 }
