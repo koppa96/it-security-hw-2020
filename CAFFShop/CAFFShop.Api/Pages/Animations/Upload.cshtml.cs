@@ -18,6 +18,8 @@ namespace CAFFShop.Api.Pages.Animations
 		private IUploadService UploadService { get; }
 		private IIdentityService IdentityService { get; }
 
+		public bool ShowSuccess { get; set; }
+
 		public UploadModel(IUploadService uploadService, IIdentityService identityService)
 		{
 			this.UploadService = uploadService;
@@ -34,7 +36,7 @@ namespace CAFFShop.Api.Pages.Animations
 			if (!ModelState.IsValid)
 				return Page();
 
-			await UploadService.AddAnimation(new UploadDto()
+			var result = await UploadService.AddAnimation(new UploadDto()
 			{
 				Name = model.Name,
 				Description = model.Description,
@@ -42,6 +44,18 @@ namespace CAFFShop.Api.Pages.Animations
 				File = await model.File.GetBytes(),
 				UserId = IdentityService.GetUserId() ?? Guid.Empty
 			});
+
+			if (result != null && result.Count > 0)
+			{
+				foreach (var error in result)
+				{
+					ModelState.AddModelError("", error);
+				}
+			}
+			else
+			{
+				ShowSuccess = true;
+			}
 
 			return Page();
 		}

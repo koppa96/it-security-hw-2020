@@ -4,7 +4,9 @@ using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -27,8 +29,12 @@ namespace CAFFShop.Application.Services
 			Directory.CreateDirectory(UploadConfig.AnimationStorePath);
 		}
 
-		public async Task AddAnimation(UploadDto dto)
+		public async Task<List<string>> AddAnimation(UploadDto dto)
 		{
+			var errors = CheckUploadRequirements(dto);
+			if (errors != null && errors.Count > 0)
+				return errors;
+
 			var previewId = await CreatePreview(dto.File);
 			var animationFileId = await SaveAnimationFile(dto.File);
 
@@ -45,6 +51,7 @@ namespace CAFFShop.Application.Services
 			});
 
 			await DbContext.SaveChangesAsync();
+			return null;
 		}
 
 		private async Task<Guid> CreatePreview(byte[] file)
@@ -71,6 +78,20 @@ namespace CAFFShop.Application.Services
 			});
 
 			return id;
+		}
+
+		private List<string> CheckUploadRequirements(UploadDto dto)
+		{
+			var errors = new List<string>();
+			if (dto.File.Length > UploadConfig.MaxUploadSizeBytes)
+				errors.Add("Túl nagy feltöltött fájl!");
+
+			var timeLimitWindowStart = DateTime.Now - TimeSpan.FromSeconds(UploadConfig.UploadTimeWindowLimitSeconds);
+			var lastUploadsCount = DbContext.Animations.Count(a => a.CreationTime > timeLimitWindowStart && a.AuthorId == dto.UserId);
+			if (lastUploadsCount > UploadConfig.UploadCountLimitInTimeWindow)
+				errors.Add("Túl sok fájlt töltött fel! Próbálja meg később!");
+
+			return errors;
 		}
 	}
 }
