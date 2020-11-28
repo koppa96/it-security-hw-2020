@@ -48,6 +48,7 @@ namespace CAFFShop.Api.Pages.Animations
             }
 
             Animation = await _context.Animations
+                .Include(a => a.Preview)
                 .FirstOrDefaultAsync(a => a.Id == id);
             if(Animation == null)
             {
@@ -71,6 +72,7 @@ namespace CAFFShop.Api.Pages.Animations
             }
 
             Animation = await _context.Animations
+                .Include(a => a.Preview)
                 .FirstOrDefaultAsync(a => a.Id == id);
             if (Animation == null)
             {

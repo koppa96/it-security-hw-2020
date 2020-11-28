@@ -2,6 +2,7 @@
 using CAFFShop.Application.Dtos;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -21,36 +22,59 @@ namespace CAFFShop.Application.Services
 
 		private UploadConfiguration UploadConfig { get; }
 
-		public UploadService(CaffShopContext dbContext, IOptions<UploadConfiguration> uploadConfiguration)
+		private ILogger<UploadService> Logger { get; }
+
+		public UploadService(CaffShopContext dbContext, IOptions<UploadConfiguration> uploadConfiguration, ILogger<UploadService> logger)
 		{
 			this.DbContext = dbContext;
 			this.UploadConfig = uploadConfiguration.Value;
-			Directory.CreateDirectory(UploadConfig.PreviewPath);
-			Directory.CreateDirectory(UploadConfig.AnimationStorePath);
+			this.Logger = logger;
+			try
+			{
+				Directory.CreateDirectory(UploadConfig.PreviewPath);
+				Directory.CreateDirectory(UploadConfig.AnimationStorePath);
+			} catch(Exception e)
+			{
+				Logger.LogError(e, "Sikertelen könyvtár létrehozás");
+			}
 		}
 
 		public async Task<List<string>> AddAnimation(UploadDto dto)
 		{
 			var errors = CheckUploadRequirements(dto);
 			if (errors != null && errors.Count > 0)
-				return errors;
-
-			var previewId = await CreatePreview(dto.File);
-			var animationFileId = await SaveAnimationFile(dto.File);
-
-			DbContext.Animations.Add(new Dal.Entities.Animation
 			{
-				Id = Guid.NewGuid(),
-				Name = dto.Name,
-				Description = dto.Description,
-				Price = dto.Price,
-				CreationTime = DateTime.Now,
-				FileId = animationFileId,
-				PreviewId = previewId,
-				AuthorId = dto.UserId
-			});
+				foreach(var error in errors)
+				{
+					Logger.LogInformation("Sikertelen feltöltés (User: {0}): {1}", dto.UserId, error);
+				}
+				return errors;
+			}
+			var id = Guid.NewGuid();
+			try
+			{
+				var previewId = await CreatePreview(dto.File);
+				var animationFileId = await SaveAnimationFile(dto.File);
+				DbContext.Animations.Add(new Dal.Entities.Animation
+				{
+					Id = id,
+					Name = dto.Name,
+					Description = dto.Description,
+					Price = dto.Price,
+					CreationTime = DateTime.Now,
+					FileId = animationFileId,
+					PreviewId = previewId,
+					AuthorId = dto.UserId
+				});
 
-			await DbContext.SaveChangesAsync();
+				await DbContext.SaveChangesAsync();
+			}
+			catch (Exception e)
+			{
+				Logger.LogError(e, "Sikertelen feltöltés (User: {0})", dto.UserId);
+				return new List<string>() { "Sikertelen feltöltés!" };
+			}
+			Logger.LogInformation("Sikeres feltöltés (User: {0}, Animation: {1})", dto.UserId, id);
 			return null;
 		}
 

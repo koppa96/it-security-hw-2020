@@ -99,3 +99,8 @@ body {
 .order-button {
     margin-top: 30px;
 }
+
+.review-btn {
+    color: white !important;
+    font-weight: bold;
+}
