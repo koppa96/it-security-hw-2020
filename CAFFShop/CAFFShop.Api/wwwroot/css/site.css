@@ -70,10 +70,32 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+
 .animation-card {
     margin: 30px;
 }
 
 .anim-footer {
     line-height: 1;
+}
+
+.own-anim-card {
+    background-color: #bff6ff !important;
+}
+
+.purchased-anim-card {
+    background-color: #c6f5d1 !important;
+}
+
+.purchase-container {
+    margin: 20px;
+}
+
+.purchase-form-label {
+    margin-bottom: 2px;
+    margin-top: 20px;
+}
+
+.order-button {
+    margin-top: 30px;
 }
