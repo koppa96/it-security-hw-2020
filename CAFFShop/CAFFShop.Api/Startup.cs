@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CAFFShop.Api.Infrastructure;
+using CAFFShop.Application.Services.Interfaces;
+using CAFFShop.Api.Services;
 
 namespace CAFFShop.Api
 {
@@ -28,12 +30,13 @@ namespace CAFFShop.Api
             services.AddDbContext<CaffShopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CaffShopContext>()
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<ICanDownloadService, CanDownloadService>();
 
             services.AddRazorPages();
         }

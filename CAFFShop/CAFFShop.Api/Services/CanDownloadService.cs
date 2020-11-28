@@ -29,7 +29,7 @@ namespace CAFFShop.Api.Services
             
             if (userId == null)
             {
-                throw new Exception("Cannot find user");
+                return false;
             }
 
             var user = await context.Users
