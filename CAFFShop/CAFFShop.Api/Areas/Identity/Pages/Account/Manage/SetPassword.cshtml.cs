@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CAFFShop.Api.Infrastructure.Filters;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CAFFShop.Api.Areas.Identity.Pages.Account.Manage
 {
+    [LogRequestsFilter]
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager<User> _userManager;
