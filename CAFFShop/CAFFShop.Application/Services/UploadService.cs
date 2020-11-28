@@ -41,7 +41,7 @@ namespace CAFFShop.Application.Services
 				CreationTime = DateTime.Now,
 				FileId = animationFileId,
 				PreviewId = previewId,
-				//AuthorId = 
+				AuthorId = dto.UserId
 			});
 
 			await DbContext.SaveChangesAsync();
