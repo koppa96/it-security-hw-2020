@@ -1,0 +1,16 @@
+﻿body {
+}
+
+.animation-detail-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card {
+    margin-bottom: 2rem;
+}
+
+.comments-container {
+    
+}

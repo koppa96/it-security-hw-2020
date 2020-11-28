@@ -23,6 +23,12 @@ namespace CAFFShop.Api.Pages.Animations
 
         public async Task OnGetAsync()
         {
+            var userId = Guid.Empty;
+            var claim = HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (claim != null) {
+                userId = Guid.Parse(claim.Value);
+            }
+
             Animation = await _context.Animations
                 .Include(a => a.Author)
                 .Include(a => a.File)
@@ -38,7 +44,9 @@ namespace CAFFShop.Api.Pages.Animations
                     AuthorName = a.Author.UserName,
                     NumberOfComments = a.Comments.Count,
                     NumberOfPurchases = a.AnimationPurchases.Count,
-                    Price = a.Price
+                    Price = a.Price,
+                    Own = a.AuthorId == userId,
+                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId)
                 }).ToListAsync();
         }
     }
@@ -53,5 +61,8 @@ namespace CAFFShop.Api.Pages.Animations
         public int NumberOfPurchases { get; set; }
         public int NumberOfComments { get; set; }
         public int Price { get; set; }
+        public bool Own { get; set; }
+        public bool HasPurchased { get; set; }
+        
     }
 }
