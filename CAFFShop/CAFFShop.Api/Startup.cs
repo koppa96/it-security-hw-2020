@@ -37,6 +37,7 @@ namespace CAFFShop.Api
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
 
             services.AddRazorPages();
