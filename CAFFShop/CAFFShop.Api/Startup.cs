@@ -46,6 +46,7 @@ namespace CAFFShop.Api
             });
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
             services.AddTransient<IUserService, UserService>();
 

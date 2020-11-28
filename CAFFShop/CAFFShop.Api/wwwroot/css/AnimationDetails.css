@@ -7,10 +7,17 @@
     width: 100%;
 }
 
-.card {
-    margin-bottom: 2rem;
-}
 
 .comments-container {
-    
+    margin-top: 20px;
+
+    width: 75%;
+}
+
+.no-comment-container {
+
+}
+
+.comment-card {
+    width: 100%;
 }
