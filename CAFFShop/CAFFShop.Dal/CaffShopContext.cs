@@ -53,6 +53,10 @@ namespace CAFFShop.Dal
                 builder.HasMany(x => x.AnimationPurchases)
                     .WithOne(x => x.Animation)
                     .HasForeignKey(x => x.AnimationId);
+
+                builder.HasOne(x => x.ApprovedBy)
+                    .WithMany()
+                    .HasForeignKey(x => x.ApprovedById);
             });
         }
     }

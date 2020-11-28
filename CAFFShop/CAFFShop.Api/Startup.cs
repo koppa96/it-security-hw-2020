@@ -1,5 +1,7 @@
 using CAFFShop.Api.Infrastructure;
 using CAFFShop.Api.Services;
+using CAFFShop.Application.Configurations;
+using CAFFShop.Application.Services;
 using CAFFShop.Application.Services.Implementations;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
@@ -14,13 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using CAFFShop.Api.Infrastructure;
-using CAFFShop.Application.Services.Interfaces;
-using CAFFShop.Api.Services;
-using CAFFShop.Api.Infrastructure.Filters;
-using CAFFShop.Application.Services.Implementations;
-using Microsoft.AspNetCore.Http;
 
 namespace CAFFShop.Api
 {

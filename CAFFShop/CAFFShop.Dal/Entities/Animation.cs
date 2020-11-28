@@ -22,6 +22,10 @@ namespace CAFFShop.Dal.Entities
         public Guid? AuthorId { get; set; }
         public virtual User Author { get; set; }
 
+        public bool IsApproved { get; set; }
+        public Guid? ApprovedById { get; set; }
+        public virtual User ApprovedBy { get; set; }
+
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<AnimationPurchase> AnimationPurchases { get; set; }
     }
