@@ -1,18 +1,21 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using CAFFShop.Api.Infrastructure;
+using CAFFShop.Api.Services;
+using CAFFShop.Application.Configurations;
+using CAFFShop.Application.Services;
+using CAFFShop.Application.Services.Implementations;
+using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Identity;
 using System;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using CAFFShop.Api.Infrastructure;
-using CAFFShop.Application.Services.Interfaces;
-using CAFFShop.Api.Services;
-using CAFFShop.Api.Infrastructure.Filters;
 
 namespace CAFFShop.Api
 {
@@ -36,9 +39,20 @@ namespace CAFFShop.Api
                 .AddEntityFrameworkStores<CaffShopContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = new PathString("/Identity/Account/Login");
+                config.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
+                config.LogoutPath = new PathString("/Identity/Account/Logout");
+            });
+
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUploadService, UploadService>();
+
+            services.Configure<UploadConfiguration>(Configuration.GetSection("Upload"));
 
             services.AddRazorPages();
         }

@@ -22,8 +22,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Kezdőlap</a>
                         </li>
+                        @if (User.HasClaim(System.Security.Claims.ClaimTypes.Role, CAFFShop.Dal.Constants.RoleTypes.Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Users/Index">Felhasználókezelés</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Biztonság</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Animations/Upload">Feltöltés</a>
                         </li>
                     </ul>
                 </div>

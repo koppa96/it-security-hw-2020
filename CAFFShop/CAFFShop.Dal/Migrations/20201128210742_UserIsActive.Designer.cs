@@ -4,14 +4,16 @@ using CAFFShop.Dal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CAFFShop.Dal.Migrations
 {
     [DbContext(typeof(CaffShopContext))]
-    partial class CaffShopContextModelSnapshot : ModelSnapshot
+    [Migration("20201128210742_UserIsActive")]
+    partial class UserIsActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +25,9 @@ namespace CAFFShop.Dal.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApprovedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AuthorId")
@@ -37,6 +42,9 @@ namespace CAFFShop.Dal.Migrations
                     b.Property<Guid>("FileId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -46,21 +54,15 @@ namespace CAFFShop.Dal.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReviewState")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ReviewedById")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovedById");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("FileId");
 
                     b.HasIndex("PreviewId");
-
-                    b.HasIndex("ReviewedById");
 
                     b.ToTable("Animations");
                 });
@@ -341,6 +343,10 @@ namespace CAFFShop.Dal.Migrations
 
             modelBuilder.Entity("CAFFShop.Dal.Entities.Animation", b =>
                 {
+                    b.HasOne("CAFFShop.Dal.Entities.User", "ApprovedBy")
+                        .WithMany()
+                        .HasForeignKey("ApprovedById");
+
                     b.HasOne("CAFFShop.Dal.Entities.User", "Author")
                         .WithMany("UploadedAnimations")
                         .HasForeignKey("AuthorId");
@@ -354,10 +360,6 @@ namespace CAFFShop.Dal.Migrations
                     b.HasOne("CAFFShop.Dal.Entities.File", "Preview")
                         .WithMany()
                         .HasForeignKey("PreviewId");
-
-                    b.HasOne("CAFFShop.Dal.Entities.User", "ReviewedBy")
-                        .WithMany()
-                        .HasForeignKey("ReviewedById");
                 });
 
             modelBuilder.Entity("CAFFShop.Dal.Entities.AnimationPurchase", b =>
