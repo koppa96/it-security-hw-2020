@@ -34,6 +34,9 @@ namespace CAFFShop.Dal
                 builder.HasMany(x => x.UploadedAnimations)
                     .WithOne(x => x.Author)
                     .HasForeignKey(x => x.AuthorId);
+
+                builder.Property(x => x.IsActive)
+                    .HasDefaultValue(true);
             });
 
             modelBuilder.Entity<Animation>(builder =>

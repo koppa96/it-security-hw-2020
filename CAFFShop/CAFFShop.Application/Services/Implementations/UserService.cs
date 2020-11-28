@@ -34,7 +34,8 @@ namespace CAFFShop.Application.Services.Implementations
                 Id = x.Id,
                 Email = x.Email,
                 TwoFactorEnabled = x.TwoFactorEnabled,
-                IsAdmin = adminUsers.Any(au => au.Id == x.Id)
+                IsAdmin = adminUsers.Any(au => au.Id == x.Id),
+                IsActive = x.IsActive
             }).ToList();
         }
 
@@ -56,6 +57,8 @@ namespace CAFFShop.Application.Services.Implementations
                     {
                         await userManager.RemoveFromRoleAsync(user, RoleTypes.Admin);
                     }
+
+                    user.IsActive = updatedUser.IsActive;
                 }
             }
 

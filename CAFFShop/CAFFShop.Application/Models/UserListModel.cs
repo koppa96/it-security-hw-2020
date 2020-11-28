@@ -17,5 +17,8 @@ namespace CAFFShop.Application.Models
 
         [Display(Name = "Adminisztrátor?")]
         public bool IsAdmin { get; set; }
+
+        [Display(Name = "Engedélyezett?")]
+        public bool IsActive { get; set; }
     }
 }
