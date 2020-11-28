@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using CAFFShop.Api.Infrastructure.Filters;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CAFFShop.Api.Areas.Identity.Pages.Account.Manage
 {
+    [LogRequestsFilter]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<User> _userManager;

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CAFFShop.Api.Infrastructure;
+using CAFFShop.Api.Infrastructure.Filters;
 
 namespace CAFFShop.Api
 {
@@ -60,6 +61,7 @@ namespace CAFFShop.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<UserLoggerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

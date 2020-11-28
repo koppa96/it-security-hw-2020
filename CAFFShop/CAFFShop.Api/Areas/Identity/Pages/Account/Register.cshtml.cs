@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using CAFFShop.Api.Infrastructure.Filters;
 
 namespace CAFFShop.Api.Areas.Identity.Pages.Account
 {
