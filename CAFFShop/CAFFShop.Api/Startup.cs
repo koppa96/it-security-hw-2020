@@ -14,6 +14,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CAFFShop.Api.Infrastructure;
+using CAFFShop.Application.Services.Interfaces;
+using CAFFShop.Api.Services;
+using CAFFShop.Api.Infrastructure.Filters;
+using CAFFShop.Application.Services.Implementations;
+using Microsoft.AspNetCore.Http;
 
 namespace CAFFShop.Api
 {
@@ -48,6 +55,9 @@ namespace CAFFShop.Api
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUploadService, UploadService>();
+
+            services.Configure<UploadConfiguration>(Configuration.GetSection("Upload"));
 
             services.AddRazorPages();
         }
