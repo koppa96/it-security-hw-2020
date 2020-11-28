@@ -1,4 +1,5 @@
 ﻿using CAFFShop.Dal;
+using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -33,6 +34,7 @@ namespace CAFFShop.Api.Pages.Animations
                 .Include(a => a.Preview)
                 .Include(a => a.Comments)
                 .Include(a => a.AnimationPurchases)
+                .Where(a => a.ReviewState == ReviewState.Approved)
                 .Select(a => new AnimationDto
                 {
                     Id = a.Id,

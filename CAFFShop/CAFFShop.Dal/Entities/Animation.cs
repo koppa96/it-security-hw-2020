@@ -22,11 +22,16 @@ namespace CAFFShop.Dal.Entities
         public Guid? AuthorId { get; set; }
         public virtual User Author { get; set; }
 
-        public bool IsApproved { get; set; }
-        public Guid? ApprovedById { get; set; }
-        public virtual User ApprovedBy { get; set; }
+        public ReviewState ReviewState { get; set; } = ReviewState.Pending;
+        public Guid? ReviewedById { get; set; }
+        public virtual User ReviewedBy { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<AnimationPurchase> AnimationPurchases { get; set; }
+    }
+
+    public enum ReviewState
+    {
+        Pending, Approved, Rejected
     }
 }
