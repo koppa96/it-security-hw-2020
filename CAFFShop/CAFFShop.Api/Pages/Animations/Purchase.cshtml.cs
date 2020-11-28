@@ -32,15 +32,20 @@ namespace CAFFShop.Api.Pages.Animations
         [BindProperty]
         public bool Newsletter { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        private Guid? TryGetClaim()
         {
-            var userId = Guid.Empty;
             var claim = HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (claim != null)
             {
-                userId = Guid.Parse(claim.Value);
-            } 
-            else
+                return Guid.Parse(claim.Value);
+            }
+            return null;
+        }
+
+        public async Task<IActionResult> OnGetAsync(Guid? id)
+        {
+            var userId = TryGetClaim();
+            if(userId == null)
             {
                 return RedirectToPage("/Animations/Index");
             }
@@ -62,6 +67,19 @@ namespace CAFFShop.Api.Pages.Animations
 
         public async Task<ActionResult> OnPostAsync(Guid? id)
         {
+            var userId = TryGetClaim();
+            if (userId == null)
+            {
+                return RedirectToPage("/Animations/Index");
+            }
+
+            Animation = await _context.Animations
+                .FirstOrDefaultAsync(a => a.Id == id);
+            if (Animation == null)
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -71,27 +89,11 @@ namespace CAFFShop.Api.Pages.Animations
                 return Page();
             }
 
-            var userId = Guid.Empty;
-            var claim = HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (claim != null)
-            {
-                userId = Guid.Parse(claim.Value);
-            }
-            else
-            {
-                return RedirectToPage("/Animations/Index");
-            }
-            Animation = await _context.Animations
-                .FirstOrDefaultAsync(a => a.Id == id);
-            if (Animation == null)
-            {
-                return NotFound();
-            }
             AnimationPurchase = new AnimationPurchase()
             {
                 Id = Guid.NewGuid(),
                 Animation = Animation,
-                UserId = userId,
+                UserId = userId.Value,
                 BillingAddress = BillingAddress,
                 BillingName = BillingName,
                 PriceAtPurchase = Animation.Price,

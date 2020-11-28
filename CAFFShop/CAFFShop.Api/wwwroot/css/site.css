@@ -86,3 +86,16 @@ body {
 .purchased-anim-card {
     background-color: #c6f5d1 !important;
 }
+
+.purchase-container {
+    margin: 20px;
+}
+
+.purchase-form-label {
+    margin-bottom: 2px;
+    margin-top: 20px;
+}
+
+.order-button {
+    margin-top: 30px;
+}
