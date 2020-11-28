@@ -1,9 +1,11 @@
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,13 +15,15 @@ namespace CAFFShop.Api.Pages.Animations
     {
         private readonly CaffShopContext context;
         public readonly ICanDownloadService canDownloadService;
+        public IDownloadService DownloadService { get; set; }
 
         public AnimationDetailsDTO AnimationDetails { get; set; }
 
-        public AnimationDetailsModel(CaffShopContext context, ICanDownloadService canDownloadService)
+        public AnimationDetailsModel(CaffShopContext context, ICanDownloadService canDownloadService, IDownloadService downloadService)
         {
             this.context = context;
             this.canDownloadService = canDownloadService;
+            this.DownloadService = downloadService;
         }
 
         public async Task OnGetAsync(Guid? id)
@@ -55,6 +59,21 @@ namespace CAFFShop.Api.Pages.Animations
                 CanDownloadCAFF = await canDownloadService.CanDownload(animation),
                 PreviewFile = animation.Preview.Path
             };            
+        }
+
+        public async Task<IActionResult> OnPostDownloadAnimation(Guid id)
+        {
+            var animationName = await context.Animations.Where(a => a.Id == id).Select(a => a.Name).SingleOrDefaultAsync() ?? "animation";
+            Stream stream = await DownloadService.GetFile(id);
+
+            if (stream == null || stream.Length == 0)
+            {
+                ModelState.AddModelError("", "Sikertelen letöltés!");
+                await OnGetAsync(id);
+                return Page();
+            }
+
+            return File(stream, "application/octet-stream", $"{animationName}.caff");
         }
     }
 
