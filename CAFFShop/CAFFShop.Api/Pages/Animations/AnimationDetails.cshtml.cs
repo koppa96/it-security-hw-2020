@@ -7,6 +7,7 @@ using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CAFFShop.Api.Pages.Animations
@@ -36,57 +37,56 @@ namespace CAFFShop.Api.Pages.Animations
 
             if (animation == null)
             {
-                throw new Exception("Animation not found");
+                return;
             }
 
             AnimationDetails = await createAnimationDetailsDTO(animation);
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid id, string action)
+
+        public async Task<IActionResult> OnPostAsync(Guid id, string action, string commentId)
         {
             var userId = identityService.GetUserId();
 
-            if (userId == null)
+            if (userId != null)
             {
-                throw new Exception("UserId is not found");
-            }
 
-            if (action == "commentSubmit")
-            {
-                var commentFromForm = Request.Form["comment"];
-                var comment = new Comment
+                if (action == "commentSubmit")
                 {
-                    AnimationId = id,
-                    CreationTime = DateTime.Now,
-                    Text = commentFromForm,
-                    UserId = userId ?? throw new Exception("UserId is not found")
-                };
+                    var commentFromForm = Request.Form["comment"];
+                    var comment = new Comment
+                    {
+                        AnimationId = id,
+                        CreationTime = DateTime.Now,
+                        Text = commentFromForm,
+                        UserId = userId.Value
+                    };
 
-                var animation = await context.Animations
-                    .Include(x => x.Author)
-                    .Include(x => x.Comments)
-                        .ThenInclude(x => x.User)
-                    .SingleOrDefaultAsync(x => x.Id == id);
+                    var animation = await context.Animations
+                        .Include(x => x.Author)
+                        .Include(x => x.Comments)
+                            .ThenInclude(x => x.User)
+                        .SingleOrDefaultAsync(x => x.Id == id);
 
-                if (animation == null)
-                {
-                    throw new Exception("Animation not found");
+                    if (animation == null)
+                    {
+                        return RedirectToPage();
+                    }
+
+                    animation.Comments.Add(comment);
                 }
 
-                animation.Comments.Add(comment);
-                
-            } else if (action == "commentDelete")
-            {
-
+                if (action == "commentDelete")
+                {
+                    Console.WriteLine(commentId);
+                }
             }
 
-            
-
             await context.SaveChangesAsync();
-            return RedirectToPage();
-
-
+            return RedirectToPage();    
         }
+
+              
 
         private async Task<AnimationDetailsDTO> createAnimationDetailsDTO(Animation animation)
         {

@@ -2,6 +2,7 @@
 using CAFFShop.Dal.Constants;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 using System.Security.Claims;
 
 namespace CAFFShop.Api.Services
