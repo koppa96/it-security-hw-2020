@@ -8,7 +8,16 @@
 <h1>Felhasználók</h1>
 
 <form method="post">
-    <button class="btn btn-primary" type="submit">Mentés</button>
+    @if (Model.SaveSuccess)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Sikeres jogosultság mentés!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    <button class="btn btn-primary my-3" type="submit">Mentés</button>
     <table class="table">
         <thead>
             <tr>

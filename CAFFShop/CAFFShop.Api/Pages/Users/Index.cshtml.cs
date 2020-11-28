@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CAFFShop.Api.Infrastructure.Filters;
+using CAFFShop.Application.Models;
+using CAFFShop.Application.Services.Interfaces;
+using CAFFShop.Dal.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CAFFShop.Dal;
-using CAFFShop.Dal.Entities;
-using CAFFShop.Application.Services.Interfaces;
-using CAFFShop.Application.Models;
-using Microsoft.AspNetCore.Authorization;
-using CAFFShop.Dal.Constants;
-using CAFFShop.Api.Infrastructure.Filters;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CAFFShop.Api.Pages.Users
 {
@@ -28,6 +23,7 @@ namespace CAFFShop.Api.Pages.Users
 
         [BindProperty]
         public List<UserListModel> Users { get;set; }
+        public bool SaveSuccess { get; set; } = false;
 
         public async Task OnGetAsync()
         {
@@ -38,6 +34,7 @@ namespace CAFFShop.Api.Pages.Users
         {
             await userService.UpdateUserRolesAsync(Users);
             Users = await userService.ListUsersAsync();
+            SaveSuccess = true;
         }
     }
 }
