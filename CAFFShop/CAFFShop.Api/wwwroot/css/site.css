@@ -70,10 +70,19 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
+
 .animation-card {
     margin: 30px;
 }
 
 .anim-footer {
     line-height: 1;
+}
+
+.own-anim-card {
+    background-color: #bff6ff !important;
+}
+
+.purchased-anim-card {
+    background-color: #c6f5d1 !important;
 }

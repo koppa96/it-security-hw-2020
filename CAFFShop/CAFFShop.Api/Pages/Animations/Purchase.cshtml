@@ -1,0 +1,34 @@
+﻿@page "/animations/{id:guid}/purchase"
+@model CAFFShop.Api.Pages.Animations.PurchaseModel
+
+@{
+    ViewData["Title"] = "Purchase";
+}
+
+<h1>Animáció vásárlása</h1>
+
+<div>
+    <h4>Számlázási adatok</h4>
+    <hr />
+        <form method="post">
+            <div class="d-flex flex-column align-items-stretch">
+                <label asp-for="BillingName"></label>
+                <input placeholder="Számlázási név" asp-for="BillingName" />
+
+                <label asp-for="BillingAddress"></label>
+                <input placeholder="Számlázási cím" asp-for="BillingAddress" />
+
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="TosAccepted">
+                    <label class="form-check-label" for="defaultCheck1">Elfogadom a vásárlási feltételeket</label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Newsletter">
+                    <label class="form-check-label" for="defaultCheck1">Hozzájárulok személyes adataim hirdetési célokra történő felhasználásához</label>
+                </div>
+
+                <button class="btn btn-danger order-button">Vásárlás véglegesítése</button>
+            </div>
+        </form>
+</div>
