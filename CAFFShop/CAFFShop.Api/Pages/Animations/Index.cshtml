@@ -36,7 +36,7 @@
             </div>
             @if (HttpContext.User.Identity.IsAuthenticated)
             {
-                <a href="#" class="btn btn-primary">Részletek</a>
+                <a href="/animations/@(item.Id)" class="btn btn-primary">Részletek</a>
             }
             else
             {
