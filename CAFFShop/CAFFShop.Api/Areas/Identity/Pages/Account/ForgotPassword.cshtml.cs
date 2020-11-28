@@ -33,6 +33,7 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
+            [Display(Name = "E-mail cím")]
             public string Email { get; set; }
         }
 

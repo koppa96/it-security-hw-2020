@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CAFFShop.Api.Infrastructure;
 
 namespace CAFFShop.Api
 {
@@ -28,8 +30,11 @@ namespace CAFFShop.Api
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddIdentity<User, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<CaffShopContext>();
-            
+                .AddEntityFrameworkStores<CaffShopContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+
             services.AddRazorPages();
         }
 
