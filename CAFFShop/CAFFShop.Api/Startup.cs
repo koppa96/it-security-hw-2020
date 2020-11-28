@@ -13,6 +13,8 @@ using CAFFShop.Api.Infrastructure;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Api.Services;
 using CAFFShop.Api.Infrastructure.Filters;
+using CAFFShop.Application.Services;
+using CAFFShop.Application.Configurations;
 
 namespace CAFFShop.Api
 {
@@ -38,6 +40,9 @@ namespace CAFFShop.Api
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
+            services.AddScoped<IUploadService, UploadService>();
+
+            services.Configure<UploadConfiguration>(Configuration.GetSection("Upload"));
 
             services.AddRazorPages();
         }
