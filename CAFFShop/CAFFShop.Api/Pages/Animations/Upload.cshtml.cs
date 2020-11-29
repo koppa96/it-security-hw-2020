@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
+using CAFFShop.Api.Infrastructure.Filters;
 
 namespace CAFFShop.Api.Pages.Animations
 {
 	[Authorize]
+	[LogRequestsFilter]
 	public class UploadModel : PageModel
     {
 		public UploadInputModel Model { get; set; }

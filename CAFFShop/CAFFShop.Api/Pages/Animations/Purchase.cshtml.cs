@@ -1,4 +1,7 @@
-﻿using CAFFShop.Dal.Entities;
+﻿using CAFFShop.Api.Infrastructure.Filters;
+using CAFFShop.Application.Services.Interfaces;
+using CAFFShop.Dal.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +11,19 @@ using System.Threading.Tasks;
 
 namespace CAFFShop.Api.Pages.Animations
 {
+    [Authorize]
+    [LogRequestsFilter]
     public class PurchaseModel : PageModel
     {
         private readonly CAFFShop.Dal.CaffShopContext _context;
+        private readonly IIdentityService identityService;
+        private readonly IPurchaseService purchaseService;
 
-        public PurchaseModel(CAFFShop.Dal.CaffShopContext context)
+        public PurchaseModel(CAFFShop.Dal.CaffShopContext context, IIdentityService identityService, IPurchaseService purchaseService)
         {
             _context = context;
+            this.identityService = identityService;
+            this.purchaseService = purchaseService;
         }
 
         public AnimationPurchase AnimationPurchase { get; set; }
@@ -41,23 +50,11 @@ namespace CAFFShop.Api.Pages.Animations
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            var userId = TryGetClaim();
-            if(userId == null)
-            {
-                return RedirectToPage("/Animations/Index");
-            }
 
-            Animation = await _context.Animations
-                .Include(a => a.Preview)
-                .FirstOrDefaultAsync(a => a.Id == id);
-            if(Animation == null)
+            Animation = await purchaseService.GetAnimation(id.GetValueOrDefault());
+            if (Animation == null)
             {
                 return NotFound();
-            }
-
-            if(await _context.AnimationPurchases.AnyAsync(p => p.UserId == userId && p.Animation == Animation) || Animation.AuthorId == userId)
-            {
-                return RedirectToPage("/Animations/AnimationDetails", new { id });
             }
 
             return Page();

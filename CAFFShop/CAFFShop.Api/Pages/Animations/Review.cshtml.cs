@@ -9,9 +9,13 @@ using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using System.Security.Claims;
 using CAFFShop.Dal.Constants;
+using Microsoft.AspNetCore.Authorization;
+using CAFFShop.Api.Infrastructure.Filters;
 
 namespace CAFFShop.Api.Pages.Animations
 {
+    [Authorize(Roles = RoleTypes.Admin)]
+    [LogRequestsFilter]
     public class ReviewModel : PageModel
     {
         private readonly CAFFShop.Dal.CaffShopContext _context;

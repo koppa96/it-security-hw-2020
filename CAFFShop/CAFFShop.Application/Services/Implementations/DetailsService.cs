@@ -71,11 +71,6 @@ namespace CAFFShop.Application.Services.Implementations
         {
             var userId = identityService.GetUserId();
 
-            if (userId == null)
-            {
-                return;
-            }
-
             var comment = new Comment
             {
                 AnimationId = animationId,

@@ -1,4 +1,5 @@
-﻿using CAFFShop.Dal;
+﻿using CAFFShop.Application.Models;
+using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,65 +7,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CAFFShop.Application.Services.Interfaces;
 
 namespace CAFFShop.Api.Pages.Animations
 {
     public class IndexModel : PageModel
     {
-        private readonly CaffShopContext _context;
+        private readonly IAnimationListService animationListService;
 
-        public IndexModel(CaffShopContext context)
+        public IndexModel(IAnimationListService animationListService)
         {
-            _context = context;
+            this.animationListService = animationListService;
         }
 
         public IList<AnimationListModel> Animation { get;set; }
 
         public async Task OnGetAsync()
         {
-            var userId = Guid.Empty;
-            var claim = HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (claim != null) {
-                userId = Guid.Parse(claim.Value);
-            }
-
-            Animation = await _context.Animations
-                .Include(a => a.Author)
-                .Include(a => a.File)
-                .Include(a => a.Preview)
-                .Include(a => a.Comments)
-                .Include(a => a.AnimationPurchases)
-                .Include(a => a.Preview)
-                .Where(a => a.ReviewState == ReviewState.Approved)
-                .Select(a => new AnimationListModel
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                    Description = a.Description,
-                    CreationDate = a.CreationTime.ToString("G"),
-                    AuthorName = a.Author.UserName,
-                    NumberOfComments = a.Comments.Count,
-                    NumberOfPurchases = a.AnimationPurchases.Count,
-                    Price = a.Price,
-                    Own = a.AuthorId == userId,
-                    HasPurchased = a.AnimationPurchases.Any(p => p.UserId == userId),
-                    Preview = a.Preview.Path
-                }).ToListAsync();
+            Animation = await animationListService.ListAnimations();
         }
     }
 
-    public class AnimationListModel
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string CreationDate { get; set; }
-        public string AuthorName { get; set; }
-        public int NumberOfPurchases { get; set; }
-        public int NumberOfComments { get; set; }
-        public int Price { get; set; }
-        public bool Own { get; set; }
-        public bool HasPurchased { get; set; }
-        public string Preview { get; set; }
-    }
 }
