@@ -1,5 +1,4 @@
-﻿using CAFFShop.Api;
-using CAFFShop.Dal;
+﻿using CAFFShop.Dal;
 using CAFFShop.Dal.Constants;
 using CAFFShop.Dal.Entities;
 using CAFFShop.Tests.Utilities;
@@ -7,9 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -46,11 +42,18 @@ namespace CAFFShop.Tests.Tests
             });
 
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-            await userManager.CreateAsync(new User
+            var admin = new User
             {
                 UserName = "admin@teszt.hu",
                 Email = "admin@teszt.hu"
-            }, "Alma123.");
+            };
+            await userManager.CreateAsync(admin, "Alma123.");
+            await userManager.AddToRoleAsync(admin, RoleTypes.Admin);
+            await userManager.CreateAsync(new User
+            {
+                UserName = "user@teszt.hu",
+                Email = "user@teszt.hu"
+            }, "Password123.");
         }
     }
 }
