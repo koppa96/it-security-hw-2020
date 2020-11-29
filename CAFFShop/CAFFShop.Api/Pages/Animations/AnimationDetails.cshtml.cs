@@ -40,7 +40,7 @@ namespace CAFFShop.Api.Pages.Animations
                 return NotFound();
             }
 
-            if (!identityService.IsAdmin() && animation.ReviewState != ReviewState.Approved)
+            if (animation.ReviewState != ReviewState.Approved)
             {
                 return NotFound();
             }

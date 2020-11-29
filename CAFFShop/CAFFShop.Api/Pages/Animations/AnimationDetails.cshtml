@@ -29,12 +29,17 @@
             </div>
             <div class="col">
                 <div class="card mb-5">
-                    <div class="card-header">
-                        <div class="animation-detail-container">
-                            <strong>Ár</strong>
-                            @Model.AnimationDetails.Price
+                    @if (!Model.AnimationDetails.CanDownloadCAFF)
+                    {
+                        <div class="card-header">
+                            <div class="animation-detail-container">
+                                <strong>Ár</strong>
+                                @Model.AnimationDetails.Price
+                            </div>
                         </div>
-                    </div>
+
+                    }
+
                     <div class="card-body d-flex justify-content-center">
                         @if (Model.AnimationDetails.CanDownloadCAFF)
                         {
@@ -94,7 +99,7 @@
                 {
                     <div class="row">
                         <div class="card comment-card">
-                            <div class="card-header d-flex justify-content-between">
+                            <div class="card-header d-flex align-items-center justify-content-between">
                                 <div class="card-text">
                                     @comment.UserName
                                 </div>
