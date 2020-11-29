@@ -15,14 +15,12 @@ namespace CAFFShop.Api.Pages.Animations
     [LogRequestsFilter]
     public class PurchaseModel : PageModel
     {
-        private readonly CAFFShop.Dal.CaffShopContext _context;
-        private readonly IIdentityService identityService;
+
         private readonly IPurchaseService purchaseService;
 
-        public PurchaseModel(CAFFShop.Dal.CaffShopContext context, IIdentityService identityService, IPurchaseService purchaseService)
+        public PurchaseModel(IPurchaseService purchaseService)
         {
-            _context = context;
-            this.identityService = identityService;
+
             this.purchaseService = purchaseService;
         }
 
@@ -38,16 +36,6 @@ namespace CAFFShop.Api.Pages.Animations
         [BindProperty]
         public bool Newsletter { get; set; }
 
-        private Guid? TryGetClaim()
-        {
-            var claim = HttpContext.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (claim != null)
-            {
-                return Guid.Parse(claim.Value);
-            }
-            return null;
-        }
-
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
 
@@ -62,19 +50,6 @@ namespace CAFFShop.Api.Pages.Animations
 
         public async Task<ActionResult> OnPostAsync(Guid? id)
         {
-            var userId = TryGetClaim();
-            if (userId == null)
-            {
-                return RedirectToPage("/Animations/Index");
-            }
-
-            Animation = await _context.Animations
-                .Include(a => a.Preview)
-                .FirstOrDefaultAsync(a => a.Id == id);
-            if (Animation == null)
-            {
-                return NotFound();
-            }
 
             if (!ModelState.IsValid)
             {
@@ -85,20 +60,15 @@ namespace CAFFShop.Api.Pages.Animations
                 return Page();
             }
 
-            AnimationPurchase = new AnimationPurchase()
+            if (await purchaseService.Purchase(id.GetValueOrDefault(), BillingAddress, BillingName))
             {
-                Id = Guid.NewGuid(),
-                Animation = Animation,
-                UserId = userId.Value,
-                BillingAddress = BillingAddress,
-                BillingName = BillingName,
-                PriceAtPurchase = Animation.Price,
-                CreationTime = DateTime.Now
-            };
-            _context.AnimationPurchases.Add(AnimationPurchase);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("/Animations/Index");
+                return RedirectToPage("/Animations/Index");
+            }
+            else 
+            {
+                return NotFound();
+            }
+            
         }
     }
 }
