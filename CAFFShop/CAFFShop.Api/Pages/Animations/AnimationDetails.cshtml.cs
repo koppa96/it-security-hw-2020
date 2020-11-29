@@ -32,6 +32,7 @@ namespace CAFFShop.Api.Pages.Animations
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             var animation = await context.Animations
+                .Include(x => x.Preview)
                 .Include(x => x.Author)
                 .Include(x => x.Comments)
                     .ThenInclude(x => x.User)
@@ -126,7 +127,8 @@ namespace CAFFShop.Api.Pages.Animations
                     CreationTime = c.CreationTime,
                     Text = c.Text
                 }),
-                CanDownloadCAFF = await canDownloadService.CanDownload(animation)
+                CanDownloadCAFF = await canDownloadService.CanDownload(animation),
+                PreviewFile = animation.Preview?.Path
             };
         }
 
@@ -156,8 +158,8 @@ namespace CAFFShop.Api.Pages.Animations
         public string AuthorName { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
         public bool CanDownloadCAFF { get; set; }
-
-    }
+		public string PreviewFile { get; set; }
+	}
 
     public class CommentDTO
     {
