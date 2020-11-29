@@ -22,17 +22,19 @@ namespace CAFFShop.Api.Pages.Animations
     {
 
         private readonly IReviewService reviewService;
+        private readonly IDownloadService downloadService;
 
-        public ReviewModel(IReviewService reviewService)
+        public ReviewModel(IReviewService reviewService, IDownloadService downloadService)
         {
             this.reviewService = reviewService;
+            this.downloadService = downloadService;
         }
 
         public IEnumerable<AnimationReviewModel> Animations { get; set; }
 
         public IActionResult OnGet()
         {
-            reviewService.LoadAnimations();
+            Animations = reviewService.LoadAnimations();
             return Page();
         }
 
@@ -47,7 +49,7 @@ namespace CAFFShop.Api.Pages.Animations
                     return RedirectToPage();
                 }
             }
-            reviewService.LoadAnimations();
+            Animations = reviewService.LoadAnimations();
             return Page();
         }
 
@@ -62,8 +64,22 @@ namespace CAFFShop.Api.Pages.Animations
                     return RedirectToPage();
                 }
             }
-            reviewService.LoadAnimations();
+            Animations = reviewService.LoadAnimations();
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostDownload(Guid id)
+        {
+            var stream = await downloadService.GetFile(id);
+            var details = reviewService.LoadAnimations().Single(x => x.Id == id);
+
+            if (stream == null || stream.Length == 0)
+            {
+                ModelState.AddModelError("", "Sikertelen letöltés!");
+                return OnGet();
+            }
+
+            return File(stream, "application/octet-stream", $"{details.Name}.caff");
         }
     }
 }

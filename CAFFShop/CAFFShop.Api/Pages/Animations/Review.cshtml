@@ -29,6 +29,7 @@
             </div>
             <form method="post">
                 <div class="card-footer d-flex flex-row justify-content-between">
+                    <button asp-page-handler="download" asp-route-id="@(item.Id)" class="btn btn-primary">Letöltés</button>
                     <button asp-page-handler="approve" asp-route-id="@(item.Id)" class="btn btn-success review-btn">Elfogadás</button>
                     <button asp-page-handler="reject" asp-route-id="@(item.Id)" class="btn btn-danger review-btn">Elutasítás</button>
                 </div>

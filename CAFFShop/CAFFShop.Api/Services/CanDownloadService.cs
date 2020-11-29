@@ -35,7 +35,7 @@ namespace CAFFShop.Api.Services
                 .Include(x => x.UploadedAnimations)
                 .SingleOrDefaultAsync(x => x.Id == Guid.Parse(userId));
 
-            return IsAuthenticated() && (IsPurchased(user, animation) || IsAuthor(user, animation) || IsAdmin());
+            return IsAuthenticated() && (IsAdmin() || IsPurchased(user, animation) || IsAuthor(user, animation));
 
         }
         private bool IsAuthenticated()
