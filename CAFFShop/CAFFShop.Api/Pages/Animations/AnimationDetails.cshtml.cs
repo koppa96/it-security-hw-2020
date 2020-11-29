@@ -1,35 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CAFFShop.Api.Pages.Animations
 {
-    public class AnimationDetailsModel : PageModel
+	public class AnimationDetailsModel : PageModel
     {
         private readonly CaffShopContext context;
         public readonly IIdentityService identityService;
         public readonly ICanDownloadService canDownloadService;
+        public IDownloadService DownloadService { get; set; }
 
         public AnimationDetailsDTO AnimationDetails { get; set; }
 
-        public AnimationDetailsModel(CaffShopContext context, IIdentityService identityService,ICanDownloadService canDownloadService)
+        public AnimationDetailsModel(CaffShopContext context, IIdentityService identityService,ICanDownloadService canDownloadService, IDownloadService downloadService)
         {
             this.context = context;
             this.identityService = identityService;
             this.canDownloadService = canDownloadService;
+            this.DownloadService = downloadService;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             var animation = await context.Animations
+                .Include(x => x.Preview)
                 .Include(x => x.Author)
                 .Include(x => x.Comments)
                     .ThenInclude(x => x.User)
@@ -106,8 +109,6 @@ namespace CAFFShop.Api.Pages.Animations
             return RedirectToPage();    
         }
 
-              
-
         private async Task<AnimationDetailsDTO> createAnimationDetailsDTO(Animation animation)
         {
             return new AnimationDetailsDTO
@@ -126,10 +127,25 @@ namespace CAFFShop.Api.Pages.Animations
                     CreationTime = c.CreationTime,
                     Text = c.Text
                 }),
-                CanDownloadCAFF = await canDownloadService.CanDownload(animation)
+                CanDownloadCAFF = await canDownloadService.CanDownload(animation),
+                PreviewFile = animation.Preview?.Path
             };
         }
 
+        public async Task<IActionResult> OnPostDownloadAnimation(Guid id)
+        {
+            var animationName = await context.Animations.Where(a => a.Id == id).Select(a => a.Name).SingleOrDefaultAsync() ?? "animation";
+            Stream stream = await DownloadService.GetFile(id);
+
+            if (stream == null || stream.Length == 0)
+            {
+                ModelState.AddModelError("", "Sikertelen letöltés!");
+                await OnGetAsync(id);
+                return Page();
+            }
+
+            return File(stream, "application/octet-stream", $"{animationName}.caff");
+        }
     }
 
     public class AnimationDetailsDTO 
@@ -142,8 +158,8 @@ namespace CAFFShop.Api.Pages.Animations
         public string AuthorName { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
         public bool CanDownloadCAFF { get; set; }
-
-    }
+		public string PreviewFile { get; set; }
+	}
 
     public class CommentDTO
     {

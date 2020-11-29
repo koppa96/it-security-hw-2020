@@ -12,19 +12,26 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <div class="card">
-                    <!--<img class="w-100 card-img-top" src="/previews/"> -->
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <strong>Feltöltötte</strong>
-                            @Model.AnimationDetails.AuthorName
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <strong>Feltöltés ideje</strong>
-                            @Model.AnimationDetails.CreationTime
-                        </div>
-                    </div>
-                </div>
+							<div class="card">
+								@if (Model.AnimationDetails.PreviewFile != null)
+								{
+									<img class="w-100 card-img-top" src="/previews/@Model.AnimationDetails.PreviewFile">
+								}
+								else
+								{
+									<img class="w-100 card-img-top" src="/images/placeholder.png">
+								}
+								<div class="card-body">
+									<div class="d-flex justify-content-between">
+										<strong>Feltöltötte</strong>
+										@Model.AnimationDetails.AuthorName
+									</div>
+									<div class="d-flex justify-content-between">
+										<strong>Feltöltés ideje</strong>
+										@Model.AnimationDetails.CreationTime
+									</div>
+								</div>
+							</div>
                 
             </div>
             <div class="col">
@@ -43,7 +50,11 @@
                     <div class="card-body d-flex justify-content-center">
                         @if (Model.AnimationDetails.CanDownloadCAFF)
                         {
-                            <a href="#" class="btn btn-success">Letöltés</a>
+											  <form method="post" asp-page-handler="DownloadAnimation">
+												  <div asp-validation-summary="All" class="col-12 text-danger text-center"></div>
+												  <button class="btn btn-success">Letöltés</button>
+												  <input type="hidden" name="id" value="@Model.AnimationDetails.Id" />
+											  </form>
                         }
                         else
                         {

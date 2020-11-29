@@ -51,8 +51,10 @@ namespace CAFFShop.Api
             services.AddTransient<ICanDownloadService, CanDownloadService>();
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IUploadService, UploadService>();
+            services.AddScoped<IDownloadService, DownloadService>();
 
             services.Configure<UploadConfiguration>(Configuration.GetSection("Upload"));
+            services.Configure<StorageConfiguration>(Configuration.GetSection("Storage"));
 
             services.AddRazorPages();
         }
