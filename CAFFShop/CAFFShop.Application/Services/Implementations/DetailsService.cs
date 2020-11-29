@@ -3,6 +3,7 @@ using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace CAFFShop.Application.Services.Implementations
         private readonly CaffShopContext context;
         private readonly ICanDownloadService canDownloadService;
         private readonly IIdentityService identityService;
+        private readonly ILogger<DetailsService> logger;
 
-        public DetailsService(CaffShopContext context, ICanDownloadService canDownloadService, IIdentityService identityService)
+        public DetailsService(CaffShopContext context, ICanDownloadService canDownloadService, IIdentityService identityService, ILogger<DetailsService> logger)
         {
             this.context = context;
             this.canDownloadService = canDownloadService;
             this.identityService = identityService;
+            this.logger = logger;
         }
 
         public async Task<AnimationDetailsModel> GetAnimationDetails(Guid id)
@@ -35,11 +38,13 @@ namespace CAFFShop.Application.Services.Implementations
 
             if (animation == null)
             {
+                logger.LogInformation("Kért animáció nem található");
                 return null;
             }
 
             if (animation.ReviewState != ReviewState.Approved)
             {
+                logger.LogInformation("Kért animáció nincs elfogadva");
                 return null;
             }
 
@@ -51,6 +56,7 @@ namespace CAFFShop.Application.Services.Implementations
         {
             if (!identityService.IsAdmin())
             {
+                logger.LogInformation("Komment törlés meghiusítva: felhasználó (Id: {0}) nem Admin", identityService.GetUserId());
                 return;
             }
 
@@ -58,11 +64,14 @@ namespace CAFFShop.Application.Services.Implementations
 
             if (comment == null)
             {
+                logger.LogInformation("Komment törlés meghiusítva: komment (Id: {0}) nem található", commentId);
                 return;
             }
 
             context.Comments.Remove(comment);
             await context.SaveChangesAsync();
+
+            logger.LogInformation("Komment (Id: {0}) törölve");
             return;
 
         }
@@ -87,12 +96,13 @@ namespace CAFFShop.Application.Services.Implementations
 
             if (animation == null)
             {
+                logger.LogInformation("Animáció (Id: {0}) nem található");
                 return;
             }
 
             animation.Comments.Add(comment);
             await context.SaveChangesAsync();
-
+            logger.LogInformation("Sikeres kommentelés (AnimationId: {0}, UserId: {1})", animationId, userId);
         }
 
 

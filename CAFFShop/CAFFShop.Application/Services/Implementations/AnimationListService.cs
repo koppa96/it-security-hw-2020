@@ -17,7 +17,7 @@ namespace CAFFShop.Application.Services.Implementations
         private readonly CaffShopContext context;
         private readonly IIdentityService identityService;
 
-        public AnimationListService(CaffShopContext context, IIdentityService identityService, ILogger<AnimationListService> logger)
+        public AnimationListService(CaffShopContext context, IIdentityService identityService)
         {
             this.context = context;
             this.identityService = identityService;
