@@ -1,0 +1,51 @@
+﻿@page
+@model CAFFShop.Api.Pages.Users.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Felhasználók</h1>
+
+<form method="post">
+    <button class="btn btn-primary my-3" type="submit">Mentés</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Users[0].Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Users[0].TwoFactorEnabled)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Users[0].IsAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Users[0].IsActive)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" asp-for="@Model.Users[i].Id" />
+                        @Html.DisplayFor(modelItem => Model.Users[i].Email)
+                    </td>
+                    <td>
+                        @(Model.Users[i].TwoFactorEnabled ? "Igen" : "Nem")
+                    </td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.Users[i].IsAdmin" />
+                    </td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.Users[i].IsActive"/>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+

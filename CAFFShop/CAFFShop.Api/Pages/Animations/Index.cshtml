@@ -1,0 +1,53 @@
+﻿@page
+@model CAFFShop.Api.Pages.Animations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Megvásárolható animációk</h1>
+<div class="d-flex flex-wrap justify-content-center ">
+    @foreach (var item in Model.Animation)
+    {
+    <div class="card animation-card 
+        @(
+            item.Own ? "own-anim-card" : item.HasPurchased ? "purchased-anim-card" : "bg-light" 
+        )"
+         style="width: 18rem;">
+        <img class="card-img-top" src="/previews/@(item.Preview)" alt="Animation preview">
+        <div class="card-body">
+            <h5 class="card-title">
+                @Html.DisplayFor(modelItem => item.Name)
+                <br />
+                @Html.DisplayFor(modelItem => item.Price) Ft
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                Feltöltötte: @Html.DisplayFor(modelItem => item.AuthorName)
+                <br />
+                Feltöltve: @Html.DisplayFor(modelItem => item.CreationDate)
+            </h6>
+            <p class="card-text">
+                @Html.DisplayFor(modelItem => item.Description)
+            </p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <div class="anim-footer">
+                <small class="text-muted">
+                    @Html.DisplayFor(modelItem => item.NumberOfComments) komment,
+                    <br />
+                    @Html.DisplayFor(modelItem => item.NumberOfPurchases) vásárlás
+                </small>
+            </div>
+            @if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                <a href="/animations/@(item.Id)" class="btn btn-primary">Részletek</a>
+            }
+            else
+            {
+                <a href="#" class="btn btn-primary disabled">Részletek</a>
+            }
+        </div>
+    </div>
+
+    }
+</div>

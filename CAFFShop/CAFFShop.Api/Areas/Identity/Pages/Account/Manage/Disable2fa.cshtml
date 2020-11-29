@@ -1,0 +1,25 @@
+﻿@page
+@model Disable2faModel
+@{
+    ViewData["Title"] = "Kétfaktoros hitelesítés letiltása";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Ez a művelet letiltja a kétfaktoros hitelesítést.</strong>
+    </p>
+    <p>
+        A kétfaktoros authentikáció letiletása nem változtatja meg a kulcsokat. Ha a kulcsokat szeretnéd megváltoztatni
+        at autentikátor alkalmazásban <a asp-page="./ResetAuthenticator">kattints ide.</a>
+    </p>
+</div>
+
+<div>
+    <form method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">Kétfaktoros authentikáció letiltása</button>
+    </form>
+</div>

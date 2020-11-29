@@ -1,0 +1,23 @@
+﻿@page
+@model ResetAuthenticatorModel
+@{
+    ViewData["Title"] = "Authentikátor kulcs visszaállítása";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>Ha visszaállítod az authentikátor kulcsaid, az authentikátor app nem fog működni, amíg újra nem konfigurálod.</strong>
+    </p>
+    <p>
+        Ez a művelet letiltja a kétfaktoros authentikációt amíg újra nem konfigurálod.
+    </p>
+</div>
+<div>
+    <form id="reset-authenticator-form" method="post" class="form-group">
+        <button id="reset-authenticator-button" class="btn btn-danger" type="submit">Authentikátor kulcs visszaállítása</button>
+    </form>
+</div>

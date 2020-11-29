@@ -1,0 +1,62 @@
+﻿@page "/animations/{id:guid}/purchase"
+@model CAFFShop.Api.Pages.Animations.PurchaseModel
+
+@{
+    ViewData["Title"] = "Purchase";
+}
+
+<h1>Animáció vásárlása</h1>
+
+<div class="d-flex flex-row">
+    <div class="card animation-cardbg-light" style="width: 18rem;">
+        @if (Model.Animation.Preview != null)
+        {
+            <img class="card-img-top" src="/previews/@(Model.Animation.Preview.Path)" alt="Animation preview">
+        }
+        else
+        {
+            <img class="card-img-top" src="/images/placeholder.png">
+        }
+
+        
+        <div class="card-body">
+            <h5 class="card-title">
+                @Html.DisplayFor(model => model.Animation.Name);
+                <br />
+                @Html.DisplayFor(model => model.Animation.Price) Ft
+            </h5>
+            <p class="card-text">
+                @Html.DisplayFor(model => model.Animation.Description)
+            </p>
+        </div>
+    </div>
+    <div class="purchase-container">
+        <h4>Számlázási adatok</h4>
+        <hr />
+        <form method="post">
+            <div class="d-flex flex-column align-items-stretch">
+                <label class="purchase-form-label" asp-for="BillingName"></label>
+                <input class="form-control" placeholder="Számlázási név" asp-for="BillingName" />
+                <span asp-validation-for="BillingName" class="text-danger">A mező kitöltése kötelező</span>
+
+                <label class="purchase-form-label" asp-for="BillingAddress"></label>
+                <input class="form-control" placeholder="Számlázási cím" asp-for="BillingAddress" />
+                <span asp-validation-for="BillingAddress" class="text-danger">A mező kitöltése kötelező</span>
+
+                <div class="form-check purchase-form-label">
+                    <input class="form-check-input" asp-for="TosAccepted">
+                    <label class="form-check-label" for="defaultCheck1">Elfogadom a vásárlási feltételeket</label>
+                    <br />
+                    <span asp-validation-for="TosAccepted" class="text-danger">A vásárlási feltételek elfogadása kötelező</span>
+                </div>
+
+                <div class="form-check purchase-form-label">
+                    <input class="form-check-input" asp-for="Newsletter">
+                    <label class="form-check-label" for="defaultCheck1">Hozzájárulok személyes adataim hirdetési célokra történő felhasználásához</label>
+                </div>
+
+                <button class="btn btn-danger order-button">Vásárlás véglegesítése</button>
+            </div>
+        </form>
+    </div>
+</div>

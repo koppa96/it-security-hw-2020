@@ -390,3 +390,12 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,csharp
+/out
+
+
+AnimationStore/
+
+CAFFShop/CAFFShop.Api/wwwroot/previews/
+
+!CAFFShop/parser_core.dll
+/CAFFShop/.sonarqube

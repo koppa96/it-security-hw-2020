@@ -1,0 +1,61 @@
+﻿@page
+@model EnableAuthenticatorModel
+@{
+    ViewData["Title"] = "Kétfaktoros hitelesítés beállítása";
+    ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<h4>@ViewData["Title"]</h4>
+<div>
+    <p>Authentikátor app használatához hajtsd végre a következő lépéseket:</p>
+    <ol class="list">
+        <li>
+            <p>
+                Tölts le egy authentikátor alkalmazást, mint a Microsoft Authenticator
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Androidra</a> vagy
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS-re</a> vagy
+                Google Authenticatort
+                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Androidra</a> vagy
+                <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS-re</a>.
+            </p>
+        </li>
+        <li>
+            <p>Add meg a következő kulcsot: <kbd>@Model.SharedKey</kbd> az authentikátor appodnak, vagy fotózd le az alábbi QR kódot. A szóközök és kis-nagy betűk nem számítanak.</p>
+            <div id="qrCode"></div>
+            <div id="qrCodeData" data-url="@Html.Raw(@Model.AuthenticatorUri)"></div>
+        </li>
+        <li>
+            <p>
+                Miután megadtad a szükséges adatokat, az authentikátorod mutatni fog egy kódot. Add meg ezt a kódot megerősítésként.
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="send-code" method="post">
+                        <div class="form-group">
+                            <label asp-for="Input.Code" class="control-label">Megerősítő kód</label>
+                            <input asp-for="Input.Code" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="Input.Code" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Megerősítés</button>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </form>
+                </div>
+            </div>
+        </li>
+    </ol>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script type="text/javascript" src="~/lib/qr-code/qrcode.min.js"></script>
+    <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 300,
+                height: 300
+            });
+    </script>
+}

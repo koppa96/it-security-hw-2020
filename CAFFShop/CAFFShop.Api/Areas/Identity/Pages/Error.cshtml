@@ -1,0 +1,15 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Hiba.</h1>
+<h2 class="text-danger">Hiba történt a kérés végrehajtása során.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Kérés azonosító:</strong> <code>@Model.RequestId</code>
+    </p>
+}
