@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CAFFShop.Application.Dtos
+namespace CAFFShop.Application.Models
 {
-	public class UploadDto
+	public class UploadModel
 	{
 		public string Name { get; set; }
 		public string Description { get; set; }

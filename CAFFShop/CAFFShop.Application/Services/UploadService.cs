@@ -1,5 +1,5 @@
 ﻿using CAFFShop.Application.Configurations;
-using CAFFShop.Application.Dtos;
+using CAFFShop.Application.Models;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using Microsoft.Extensions.Logging;
@@ -40,7 +40,7 @@ namespace CAFFShop.Application.Services
 			}
 		}
 
-		public async Task<List<string>> AddAnimation(UploadDto dto)
+		public async Task<List<string>> AddAnimation(UploadModel dto)
 		{
 			var errors = CheckUploadRequirements(dto);
 			if (errors != null && errors.Count > 0)
@@ -105,7 +105,7 @@ namespace CAFFShop.Application.Services
 			return id;
 		}
 
-		private List<string> CheckUploadRequirements(UploadDto dto)
+		private List<string> CheckUploadRequirements(UploadModel dto)
 		{
 			var errors = new List<string>();
 			if (dto.File.Length > UploadConfig.MaxUploadSizeBytes)

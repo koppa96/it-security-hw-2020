@@ -50,6 +50,7 @@ namespace CAFFShop.Api
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ICanDownloadService, CanDownloadService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IDetailsService, DetailsService>();
             services.AddScoped<IUploadService, UploadService>();
             services.AddScoped<IDownloadService, DownloadService>();
 

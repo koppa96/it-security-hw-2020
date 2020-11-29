@@ -18,7 +18,7 @@ namespace CAFFShop.Api.Pages.Animations
             _context = context;
         }
 
-        public IList<AnimationDto> Animation { get;set; }
+        public IList<AnimationListModel> Animation { get;set; }
 
         public async Task OnGetAsync()
         {
@@ -36,7 +36,7 @@ namespace CAFFShop.Api.Pages.Animations
                 .Include(a => a.AnimationPurchases)
                 .Include(a => a.Preview)
                 .Where(a => a.ReviewState == ReviewState.Approved)
-                .Select(a => new AnimationDto
+                .Select(a => new AnimationListModel
                 {
                     Id = a.Id,
                     Name = a.Name,
@@ -53,7 +53,7 @@ namespace CAFFShop.Api.Pages.Animations
         }
     }
 
-    public class AnimationDto
+    public class AnimationListModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

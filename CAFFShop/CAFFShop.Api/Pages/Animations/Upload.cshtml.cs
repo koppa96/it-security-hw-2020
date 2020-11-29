@@ -1,5 +1,5 @@
 using CAFFShop.Api.Models;
-using CAFFShop.Application.Dtos;
+using CAFFShop.Application.Models;
 using CAFFShop.Application.Extensions;
 using CAFFShop.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +36,7 @@ namespace CAFFShop.Api.Pages.Animations
 			if (!ModelState.IsValid)
 				return Page();
 
-			var result = await UploadService.AddAnimation(new UploadDto()
+			var result = await UploadService.AddAnimation(new Application.Models.UploadModel()
 			{
 				Name = model.Name,
 				Description = model.Description,

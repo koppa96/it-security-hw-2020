@@ -1,11 +1,11 @@
 ﻿@page "/animations/{id:guid}"
-@model CAFFShop.Api.Pages.Animations.AnimationDetailsModel
+@model CAFFShop.Api.Pages.Animations.DetailsModel
 @{
 
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="~/css/AnimationDetails.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/Details.css" type="text/css" />
 </head>
 <body>
     <h1>@Model.AnimationDetails.Name</h1>
@@ -100,7 +100,7 @@
                 @if (Model.AnimationDetails.Comments.Count() == 0)
                 {
                     <div class="d-flex justify-content-center no-comment-container row">
-                        <h4>No komment</h4>
+                        <h4>Nincs komment</h4>
                     </div>
 
                 }
