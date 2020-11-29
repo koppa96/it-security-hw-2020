@@ -1,0 +1,38 @@
+﻿@page "/animations/review"
+@model CAFFShop.Api.Pages.Animations.ReviewModel
+
+@{
+    ViewData["Title"] = "Review";
+}
+
+<h1>Felülvizsgálatra váró animációk: @(Model.Animations.Count()) db</h1>
+
+<div class="d-flex flex-wrap justify-content-center">
+    @foreach (var item in Model.Animations)
+    {
+        <div class="card animation-card bg-light" style="width: 24rem;">
+            <img class="card-img-top" src="/previews/@(item.Preview)" alt="Animation preview">
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Html.DisplayFor(modelItem => item.Name)
+                    <br />
+                    @Html.DisplayFor(modelItem => item.Price) Ft
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    Feltöltötte: @Html.DisplayFor(modelItem => item.AuthorName)
+                    <br />
+                    Feltöltve: @Html.DisplayFor(modelItem => item.CreationDate)
+                </h6>
+                <p class="card-text">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </p>
+            </div>
+            <form method="post">
+                <div class="card-footer d-flex flex-row justify-content-between">
+                    <button asp-page-handler="approve" asp-route-id="@(item.Id)" class="btn btn-success review-btn">Elfogadás</button>
+                    <button asp-page-handler="reject" asp-route-id="@(item.Id)" class="btn btn-danger review-btn">Elutasítás</button>
+                </div>
+            </form>
+        </div>
+    }
+</div>

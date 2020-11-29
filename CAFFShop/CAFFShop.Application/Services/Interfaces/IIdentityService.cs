@@ -7,5 +7,9 @@ namespace CAFFShop.Application.Services.Interfaces
     public interface IIdentityService
     {
         public Guid? GetUserId();
+
+        public bool IsAdmin();
+
+        public bool IsAuthenticated();
     }
 }

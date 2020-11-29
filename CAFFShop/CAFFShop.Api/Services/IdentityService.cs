@@ -1,6 +1,8 @@
 ﻿using CAFFShop.Application.Services.Interfaces;
+using CAFFShop.Dal.Constants;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 using System.Security.Claims;
 
 namespace CAFFShop.Api.Services
@@ -18,5 +20,18 @@ namespace CAFFShop.Api.Services
         {
             return Guid.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
+
+        public bool IsAdmin()
+        {
+            return httpContextAccessor.HttpContext.User.Claims.Any(x =>
+                x.Type == ClaimTypes.Role && x.Value == RoleTypes.Admin
+            );
+        }
+
+        public bool IsAuthenticated()
+        {
+            return httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+        }
+
     }
 }
