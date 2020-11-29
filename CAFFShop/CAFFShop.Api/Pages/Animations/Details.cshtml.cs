@@ -1,9 +1,7 @@
-using CAFFShop.Api.Infrastructure.Filters;
 using CAFFShop.Application.Models;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using CAFFShop.Dal.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,22 +13,19 @@ using System.Threading.Tasks;
 
 namespace CAFFShop.Api.Pages.Animations
 {
-    [Authorize]
-    [LogRequestsFilter]
 	public class DetailsModel : PageModel
     {
-        public readonly IIdentityService identityService;
         private readonly IDetailsService detailsService;
 
         public IDownloadService DownloadService { get; set; }
-
+        public IIdentityService IdentityService { get; }
         public AnimationDetailsModel AnimationDetails { get; set; }
 
-        public DetailsModel(IIdentityService identityService, IDownloadService downloadService, IDetailsService detailsService)
+        public DetailsModel(IDownloadService downloadService, IDetailsService detailsService, IIdentityService identityService)
         {
-            this.identityService = identityService;
             this.DownloadService = downloadService;
             this.detailsService = detailsService;
+            IdentityService = identityService;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
