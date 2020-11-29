@@ -17,7 +17,7 @@ namespace CAFFShop.Application.Services
 	{
 		private CaffShopContext DbContext { get; }
 
-		[DllImport(@"..\parser_core.dll")]
+		[DllImport(@"../parser_core.dll")]
 		private static extern ulong ParseAnimation(byte[] in_buffer, ulong in_len, byte[] out_buffer, ulong out_len);
 
 		private UploadConfiguration UploadConfig { get; }

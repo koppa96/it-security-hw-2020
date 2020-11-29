@@ -28,12 +28,17 @@ namespace CAFFShop.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureDatabase(IServiceCollection services)
         {
             services.AddDbContext<CaffShopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+        }
+
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            ConfigureDatabase(services);
 
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CaffShopContext>()

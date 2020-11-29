@@ -1,34 +1,13 @@
 version: '3.4'
 
 services:
-  caffshop.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-      - KESTREL__Certificates__Default__Path=/app/cert/shop.pfx
-      - KESTREL__Certificates__Default__Password=Password123
-      - ConnectionStrings__DefaultConnection=Server=caffshop.mssql;Database=OnlineComputershopDb;User Id=SA;Password=Password123;
-      - Serilog__WriteTo__1__Name=Elasticsearch
-      - Serilog__WriteTo__1__Args__nodeUris=http://caffshop.es:9200
-      - Serilog__WriteTo__1__Args__indexFormat=caffshop-logs-{0:yyyy-MM-dd}
-      - Serilog__WriteTo__1__Args__restrictedToMinimumLevel=Information
-    ports:
-      - "5000:80"
-      - "5001:443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-      - ./cert:/app/cert
-    networks:
-      - animation_webshop_network
-
   caffshop.es:
     environment:
       - discovery.type=single-node
     volumes:
       - animation_webshop_es_data:/user/share/elasticsearch/data
     ports:
-      - "9200"
+      - "9200:9200"
     networks:
       - animation_webshop_network
 
@@ -37,22 +16,11 @@ services:
       - ELASTICSEARCH_URL=http://caffshop.es:9200
       - ELASTICSEARCH_HOSTS=http://caffshop.es:9200
     ports:
-      - "5200:5601"
+      - "5601:5601"
     networks:
       - animation_webshop_network
     depends_on:
       - caffshop.es
-
-  caffshop.mssql:
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Password123
-    ports:
-      - "5300:1433"
-    volumes:
-      - animation_webshop_mssql_data:/var/opt/mssql
-    networks:
-      - animation_webshop_network
 
 networks:
   animation_webshop_network:
