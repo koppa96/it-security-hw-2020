@@ -9,7 +9,16 @@
 
 <div class="d-flex flex-row">
     <div class="card animation-cardbg-light" style="width: 18rem;">
-        <img class="card-img-top" src="/previews/@(Model.Animation.Preview.Path)" alt="Animation preview">
+        @if (Model.Animation.Preview != null)
+        {
+            <img class="card-img-top" src="/previews/@(Model.Animation.Preview.Path)" alt="Animation preview">
+        }
+        else
+        {
+            <img class="card-img-top" src="/images/placeholder.png">
+        }
+
+        
         <div class="card-body">
             <h5 class="card-title">
                 @Html.DisplayFor(model => model.Animation.Name);
@@ -27,11 +36,11 @@
         <form method="post">
             <div class="d-flex flex-column align-items-stretch">
                 <label class="purchase-form-label" asp-for="BillingName"></label>
-                <input placeholder="Számlázási név" asp-for="BillingName" />
+                <input class="form-control" placeholder="Számlázási név" asp-for="BillingName" />
                 <span asp-validation-for="BillingName" class="text-danger">A mező kitöltése kötelező</span>
 
                 <label class="purchase-form-label" asp-for="BillingAddress"></label>
-                <input placeholder="Számlázási cím" asp-for="BillingAddress" />
+                <input class="form-control" placeholder="Számlázási cím" asp-for="BillingAddress" />
                 <span asp-validation-for="BillingAddress" class="text-danger">A mező kitöltése kötelező</span>
 
                 <div class="form-check purchase-form-label">
