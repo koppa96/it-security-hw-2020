@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CAFFShop.Application", "CAF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CAFFShop.Dal", "CAFFShop.Dal\CAFFShop.Dal.csproj", "{67E00B42-7CC1-4EB4-B049-8CA17CCFC853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAFFShop.Tests", "..\CAFFShop.Tests\CAFFShop.Tests.csproj", "{412EBDB9-00F1-429E-A713-31A48717216F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAFFShop.Tests", "CAFFShop.Tests\CAFFShop.Tests.csproj", "{A3F461B7-C13F-49B4-B09D-11664C9E5815}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{67E00B42-7CC1-4EB4-B049-8CA17CCFC853}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67E00B42-7CC1-4EB4-B049-8CA17CCFC853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67E00B42-7CC1-4EB4-B049-8CA17CCFC853}.Release|Any CPU.Build.0 = Release|Any CPU
-		{412EBDB9-00F1-429E-A713-31A48717216F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{412EBDB9-00F1-429E-A713-31A48717216F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{412EBDB9-00F1-429E-A713-31A48717216F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{412EBDB9-00F1-429E-A713-31A48717216F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F461B7-C13F-49B4-B09D-11664C9E5815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F461B7-C13F-49B4-B09D-11664C9E5815}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F461B7-C13F-49B4-B09D-11664C9E5815}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F461B7-C13F-49B4-B09D-11664C9E5815}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

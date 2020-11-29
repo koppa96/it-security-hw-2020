@@ -18,13 +18,14 @@ namespace CAFFShop.Api.Pages.Animations
         private readonly IDetailsService detailsService;
 
         public IDownloadService DownloadService { get; set; }
-
+        public IIdentityService IdentityService { get; }
         public AnimationDetailsModel AnimationDetails { get; set; }
 
-        public DetailsModel(IDownloadService downloadService, IDetailsService detailsService)
+        public DetailsModel(IDownloadService downloadService, IDetailsService detailsService, IIdentityService identityService)
         {
             this.DownloadService = downloadService;
             this.detailsService = detailsService;
+            IdentityService = identityService;
         }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)

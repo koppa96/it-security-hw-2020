@@ -28,17 +28,11 @@ namespace CAFFShop.Api
 
         public IConfiguration Configuration { get; }
 
-        public virtual void ConfigureDatabase(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CaffShopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-        }
-
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            ConfigureDatabase(services);
 
             services.AddIdentity<User, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<CaffShopContext>()

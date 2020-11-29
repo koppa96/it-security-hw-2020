@@ -80,7 +80,7 @@
             <div class="container comments-container">
                 <h3>Kommentek</h3>
 
-                @if (Model.identityService.IsAuthenticated())
+                @if (Model.IdentityService.IsAuthenticated())
                 {
                     <form method="post">
                         <div class="mb-10">
@@ -114,7 +114,7 @@
                                 <div class="card-text">
                                     @comment.UserName
                                 </div>
-                                @if (Model.identityService.IsAdmin())
+                                @if (Model.IdentityService.IsAdmin())
                                 {
                                 <form method="post">
                                     <button asp-page-handler="DeleteComment" asp-route-commentId="@comment.Id" type="submit" class="btn btn-outline-danger">
