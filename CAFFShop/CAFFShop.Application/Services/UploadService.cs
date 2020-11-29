@@ -1,5 +1,5 @@
 ﻿using CAFFShop.Application.Configurations;
-using CAFFShop.Application.Dtos;
+using CAFFShop.Application.Models;
 using CAFFShop.Application.Services.Interfaces;
 using CAFFShop.Dal;
 using Microsoft.Extensions.Logging;
@@ -21,25 +21,26 @@ namespace CAFFShop.Application.Services
 		private static extern ulong ParseAnimation(byte[] in_buffer, ulong in_len, byte[] out_buffer, ulong out_len);
 
 		private UploadConfiguration UploadConfig { get; }
-
+		private StorageConfiguration StorageConfig { get; }
 		private ILogger<UploadService> Logger { get; }
 
-		public UploadService(CaffShopContext dbContext, IOptions<UploadConfiguration> uploadConfiguration, ILogger<UploadService> logger)
+		public UploadService(CaffShopContext dbContext, IOptions<UploadConfiguration> uploadConfiguration, IOptions<StorageConfiguration> storageConfiguration, ILogger<UploadService> logger)
 		{
 			this.DbContext = dbContext;
 			this.UploadConfig = uploadConfiguration.Value;
+			this.StorageConfig = storageConfiguration.Value;
 			this.Logger = logger;
 			try
 			{
-				Directory.CreateDirectory(UploadConfig.PreviewPath);
-				Directory.CreateDirectory(UploadConfig.AnimationStorePath);
+				Directory.CreateDirectory(StorageConfig.PreviewPath);
+				Directory.CreateDirectory(StorageConfig.AnimationStorePath);
 			} catch(Exception e)
 			{
 				Logger.LogError(e, "Sikertelen könyvtár létrehozás");
 			}
 		}
 
-		public async Task<List<string>> AddAnimation(UploadDto dto)
+		public async Task<List<string>> AddAnimation(UploadModel dto)
 		{
 			var errors = CheckUploadRequirements(dto);
 			if (errors != null && errors.Count > 0)
@@ -82,11 +83,11 @@ namespace CAFFShop.Application.Services
 		{
 			byte[] out_buff = new byte[file.Length];
 			int real_out_len = (int)ParseAnimation(file, (ulong)file.Length + 1, out_buff, (ulong)out_buff.Length + 1);
-			return await SaveFile(UploadConfig.PreviewPath, UploadConfig.PreviewFormat, out_buff);
+			return await SaveFile(StorageConfig.PreviewPath, UploadConfig.PreviewFormat, out_buff);
 		}
 
 		private async Task<Guid> SaveAnimationFile(byte[] file)
-		 => await SaveFile(UploadConfig.AnimationStorePath, UploadConfig.AnimationFormat, file);
+		 => await SaveFile(StorageConfig.AnimationStorePath, UploadConfig.AnimationFormat, file);
 
 		private async Task<Guid> SaveFile(string path, string fileExtension, byte[] content)
 		{
@@ -104,7 +105,7 @@ namespace CAFFShop.Application.Services
 			return id;
 		}
 
-		private List<string> CheckUploadRequirements(UploadDto dto)
+		private List<string> CheckUploadRequirements(UploadModel dto)
 		{
 			var errors = new List<string>();
 			if (dto.File.Length > UploadConfig.MaxUploadSizeBytes)

@@ -82,9 +82,9 @@ namespace CAFFShop.Api.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (!user.IsActive)
+                if (user == null || !user.IsActive)
                 {
-                    ModelState.AddModelError(string.Empty, "Nem lehetett bejelentkezi. A felhasználó le lett tiltva!");
+                    ModelState.AddModelError(string.Empty, "Nem lehetett bejelentkezi. A felhasználó le lett tiltva vagy nem létezik!");
                     return Page();
                 }
 
