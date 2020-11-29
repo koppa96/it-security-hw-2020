@@ -27,7 +27,7 @@ namespace CAFFShop.Api.Pages.Animations
             this.canDownloadService = canDownloadService;
         }
 
-        public async Task OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             var animation = await context.Animations
                 .Include(x => x.Author)
@@ -37,16 +37,35 @@ namespace CAFFShop.Api.Pages.Animations
 
             if (animation == null)
             {
-                return;
+                return NotFound();
+            }
+
+            if (!identityService.IsAdmin() && animation.ReviewState != ReviewState.Approved)
+            {
+                return NotFound();
             }
 
             AnimationDetails = await createAnimationDetailsDTO(animation);
+            return Page();
         }
 
-        public Task OnPostDeleteComment(Guid commentId)
+        public async Task<IActionResult> OnPostDeleteCommentAsync(Guid commentId)
         {
+            if (!identityService.IsAdmin())
+            {
+                return RedirectToPage();
+            }
 
-            return Task.CompletedTask;
+            var comment = await context.Comments.FindAsync(commentId);
+
+            if (comment == null)
+            {
+                return RedirectToPage();
+            }
+
+            context.Comments.Remove(comment);
+            await context.SaveChangesAsync();
+            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid id, string action, string commentId)
@@ -79,15 +98,11 @@ namespace CAFFShop.Api.Pages.Animations
                     }
 
                     animation.Comments.Add(comment);
-                }
-
-                if (action == "commentDelete")
-                {
-                    Console.WriteLine(commentId);
+                    await context.SaveChangesAsync();
                 }
             }
 
-            await context.SaveChangesAsync();
+            
             return RedirectToPage();    
         }
 
