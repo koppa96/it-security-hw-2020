@@ -18,7 +18,15 @@ namespace CAFFShop.Api.Services
 
         public Guid? GetUserId()
         {
-            return Guid.Parse(httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var claim = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            Guid id = Guid.Empty;
+
+            if (claim != null)
+            {
+                id = Guid.Parse(claim.Value);
+            }
+
+            return id;
         }
 
         public bool IsAdmin()
